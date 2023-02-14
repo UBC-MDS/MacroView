@@ -11,3 +11,4 @@
 ## Example Sketch
 
 ## License
+Please refer to the License File [here](https://github.com/UBC-MDS/MacroView/blob/main/LICENSE)
