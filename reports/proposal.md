@@ -14,16 +14,16 @@ The column `Food Name` will be used to identify and search for a particular food
 
 As aforementioned, our goal in creating this app is to assist individuals who wish to track their nutrition but don't know where to begin or are not satisfied with existing apps for various reasons. In order to accomplish this goal, we will focus on the following research questions in the development of our dashboard:
 
-1.  What is the duration required for users to become familiar with the usage of MacroView?
-2.  Which demographic groups (i.e. in terms of age, gender, education level, etc.) are more likely to find MacroView useful?
-3.  What measurements / metrics can we use to evaluate the level of engagement and satisfaction of our users with the app?
-4.  How can we design the app to be more user-friendly and visually attractive for our users?
+1. What is the duration required for users to become familiar with the usage of MacroView?
+2. Which demographic groups (i.e. in terms of age, gender, education level, etc.) are more likely to find MacroView useful?
+3. What measurements / metrics can we use to evaluate the level of engagement and satisfaction of our users with the app?
+4. How can we design the app to be more user-friendly and visually attractive for our users?
 
 ## Usage Scenarios
 
 Bob is a UBC student who wants to keep track of his nutrition. He understands the importance of having a healthy diet but lives on a tight budget.
 
-Frustrated with existing platforms (which have recently moved to much more aggressive premium business models -- i.e. MyFitnessPal, Lifesum), Bob is in search of a nutrition tracking platform that is free, publicly accessible and uses reliable datasets. 
+Frustrated with existing platforms (which have recently moved to much more aggressive premium business models -- i.e. MyFitnessPal, Lifesum), Bob is in search of a nutrition tracking platform that is free, publicly accessible and uses reliable datasets.
 
 Bob needs to be able to quickly [look up ingredients] from a reliable database, and have the platform pull up the most relevant values. Bob generally makes healthy choices, so he’s not too concerned with micronutrients -- he is mostly concerned with macronutrients to synergize with his exercise and manage his weight.
 
