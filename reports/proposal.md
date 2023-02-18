@@ -2,9 +2,7 @@
 
 ## Motivation and Purpose
 
-The role that we will be embodying for this project is that of a nonprofit organization. In particular, we will be a nonprofit organization which has the goal of providing free, easy-to-use tools to help everyday people make healthy lifestyle choices. Our team will be playing the role of an open-source software development team working for this nonprofit organization on a nutrition tracking dashboard called MacroView.
-
-Our target audience for this dashboard, MacroView, are health/diet conscious individuals who wish to accurately track and visualize their macronutrient intake for free, and without having to worry about whether the undelying nutrition data is reliable. We wish to make an accessible dashboard that is easy-to-use for anyone, whether they're a seasoned body-builder or someone who is just getting into nutrition tracking and doesn’t know where to start.
+We are embodying the role of a nonprofit organization committed to empowering individuals to make informed and healthy lifestyle choices. Our group will be an open-source software development team whose goal is to create MacroView, a nutrition tracking dashboard that enables health-conscious individuals to accurately track and visualize their macronutrient intake. Our target audience is anyone who wants to track their nutrition easily, for free, and with reliable nutrition data. MacroView will be accessible for both experienced body-builders and individuals who are new to nutrition tracking and don't know where to start.
 
 ## Description of Data
 
