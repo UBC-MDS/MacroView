@@ -8,11 +8,11 @@ This dashboard makes use of the `Nutrient Value of Some Common Foods` dataset, w
 
 The dataset includes 22 columns for each categorized food group. 19 of those columns lists important nutrient values of each food item. For the purposes of this dashboard, which explicitly focuses on macronutrients, the columns `Food Name`, `Weight (g)`, `Energy (kcal)`,  `Protein (g)`, `Carbohydrate (g)`, and `Total Fat (g)` will be used to visualize nutrient intake and targets.
 
-The column `Food Name` will be used to identify and search for a particular food item. `Weight (g)` along with `Energy (kcal)`will be used to determine the unit energy per gram of each food item. `Protein (g)`, `Carbohydrate (g)`, and `Total Fat (g)` will be used to visualize the macronutrient make-up of each food item.
+The column `Food Name` will be used to identify and search for a particular food item. `Weight (g)` along with `Energy (kcal)` will be used to determine the unit energy per gram of each food item. `Protein (g)`, `Carbohydrate (g)`, and `Total Fat (g)` will be used to visualize the macronutrient make-up of each food item.
 
-## Research Question and Usage Scenarios
+## Research Questions and Usage Scenarios
 
-### Research Question
+### Research Questions
 
 As aforementioned, our goal in creating this app is to assist individuals who wish to track their nutrition but don't know where to begin or are not satisfied with existing apps for various reasons. In order to accomplish this goal, we will focus on the following research questions in the development of our dashboard:
 
