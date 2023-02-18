@@ -32,3 +32,7 @@ Frustrated with existing platforms (which have recently moved to much more aggre
 Bob needs to be able to quickly [look up ingredients] from a reliable database, and have the platform pull up the most relevant values. Bob generally makes healthy choices, so he’s not too concerned with micronutrients -- he is mostly concerned with macronutrients to synergize with his exercise and manage his weight.
 
 When using the app, Bob will [weigh out the food] he is making for himself, and enter the amounts as he goes. He wants to see his current totals of macronutrients for the day and his remaining amounts in both written and visualization formats (e.g. a barplot with a target bar).
+
+### App Sketch
+
+![](../img/sketch.png)
