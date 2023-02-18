@@ -2,6 +2,10 @@
 
 ## Motivation and Purpose
 
+The role that we will be embodying for this project is that of a nonprofit organization. In particular, we will be a nonprofit organization which has the goal of providing free, easy-to-use tools to help everyday people make healthy lifestyle choices. Our team will be playing the role of an open-source software development team working for this nonprofit organization on a nutrition tracking dashboard called MacroView.
+
+Our target audience for this dashboard, MacroView, are health/diet conscious individuals who wish to accurately track and visualize their macronutrient intake for free, and without having to worry about whether the undelying nutrition data is reliable. We wish to make an accessible dashboard that is easy-to-use for anyone, whether they're a seasoned body-builder or someone who is just getting into nutrition tracking and doesn’t know where to start.
+
 ## Description of Data
 
 This dashboard makes use of the `Nutrient Value of Some Common Foods` dataset, which was published by Health Canada in 2008. An overview of the dataset is provided in a PDF format in [this booklet](https://www.canada.ca/en/health-canada/services/food-nutrition/healthy-eating/nutrient-data/nutrient-value-some-common-foods-2008.html).  The dataset contains the nutrient values of 1100 commonly consumed foods in Canada, and has 19 categories of foods. The data for each category of food is contained in a separate .csv file, which can be accessed [here](https://open.canada.ca/data/en/dataset/a289fd54-060c-4a96-9fcf-b1c6e706426f). A combined .csv file of all the food items was used to create this dashboard.
