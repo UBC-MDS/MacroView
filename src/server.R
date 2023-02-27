@@ -1,17 +1,22 @@
 library(shiny)
+library(dplyr)
+library(ggplot2)
 
 
 server <- function(input, output, session) {
+
   
-  output$hist <-  renderPlot({
+  output$sortedChart <- renderPlot({
+    data <- read.csv('../data/cleaned_dataset.csv') |> rename(name = Food.name)
+    specCol <- data[, input$component]
+    data$colByWeight <- ifelse(data$Weight == 0, 0, specCol / data$Weight)
     
-    x    <- faithful[, 2]
-    bins <- seq(min(x), max(x), length.out = input$bins + 1)
+    top_data <- data |> arrange(desc(colByWeight)) |> head(input$topK)
     
-    # draw the histogram with the specified number of bins
-    hist(x, breaks = bins, col = 'darkgray', border = 'white',
-         xlab = 'Waiting time to next eruption (in mins)',
-         main = 'Histogram of waiting times')
+    top_data |> ggplot(aes(x = reorder(name, -colByWeight), y = colByWeight)) +
+      geom_bar(stat = "identity") +
+      labs(x = "Food name", y = paste0(input$component, "/ Weight"))
+      
   })
 }
 
