@@ -15,7 +15,12 @@ ui <- navbarPage('MacroView', # App title goes here!
                             sidebarPanel(
                               selectInput(inputId='component',
                                           label='Select a compoent to rank',
-                                          choices=c('Energy', 'Protein'),
+                                          choices=c('Energy', 'Protein', 'Carbohydrate', 'Total Sugar', 'Total Fat', 
+                                                    'Saturated Fat', 'Monounsaturated Fat', 'Polyunsaturated Fat', 
+                                                    'Cholesterol', 'Calcium', 'Iron', 'Sodium', 'Potassium', 'Magnesium',
+                                                    'Phosphorus', 'Vitamin A', 'Lycopene', 'Folate', 'DHA', 'EPA', 
+                                                    'Vitamin D', 'Vitamin B12', 'Vitamin E', 'Trans Fat', 'Vitamin C'
+                                                    ),
                                           selected='Energy'),
                               sliderInput(inputId='topK',
                                           label='Choose top K food to rank',
