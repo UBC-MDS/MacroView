@@ -25,7 +25,7 @@ ui <- navbarPage('MacroView', # App title goes here!
                             ),
                            
                             mainPanel(
-                              plotOutput(outputId = 'sortedChart')
+                              plotlyOutput(outputId = 'sortedChart')
                             )
                           )
               )
