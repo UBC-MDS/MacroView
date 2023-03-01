@@ -6,6 +6,8 @@ library(plotly)
 
 server <- function(input, output, session) {
 
+  
+  
   output$sortedChart <- renderPlotly({
     data <- read.csv('../data/cleaned_dataset.csv') |> rename(name = Food.name)
     specCol <- data[, gsub(" ", ".", input$component, fixed=TRUE)]
