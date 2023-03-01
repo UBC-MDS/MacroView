@@ -10,10 +10,10 @@ ui <- navbarPage('MacroView', # App title goes here!
                             fluidRow(
                               
                               # Leftmost Input Panel 
-                              column(5,
+                              column(2,
                                      
                               titlePanel("Enter Nutrient Targets"),
-                              checkboxInput("selectSliders", "Use Sliders?", value = TRUE),
+                              actionButton("selectSliders", "Use Sliders", class = "btn-block"),
                               numericInput("calSliders", "Enter Calorie Goal", 
                                            value = 2000, min = 0, max = 20000),
                               sliderInput("proteinSlider", "Protein %", 
@@ -22,18 +22,33 @@ ui <- navbarPage('MacroView', # App title goes here!
                                           value = 50, min = 0, max = 100),
                               sliderInput("fatSlider", "Fat %", 
                                           value = 25, min = 0, max = 100),
-                              checkboxInput("selectText", "OR Use Manual Input?", value = FALSE),
+                              tableOutput("table_sliders"),
+                              actionButton("selectText", "Use Manual Input?", class = "btn-block"),
                               textInput("proteinText", "Protein (Grams)",
                                         value = 100),
                               textInput("carbText", "Carbs (Grams)",
                                         value = 100),
                               textInput("fatText", "Fat (Grams)",
                                         value = 100),
-                              
-                              
+                              tableOutput("table_text")
+                    
                               ),
                               # END leftmost panel
                               
+                              # Middle Panel (Drop Downs)
+                              column(3,
+                                    titlePanel("Enter Food")),
+                              # End Middle Panel
+                              
+                              # Right Panel (Visualizations)
+                              column(5, 
+                                     titlePanel("Daily Totals"),
+                                     plotOutput("main_plot", width = "400px")
+                                     )
+                              # End Right Panel
+                              
+                              
+                                    
                               
                               
                               )
