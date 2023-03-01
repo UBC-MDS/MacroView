@@ -6,6 +6,13 @@ library(plotly)
 
 server <- function(input, output, session) {
 
+  #Main Dashboard, Left Panel, Mutually Exclusive Buttons
+  observeEvent(input$selectSliders, {
+    updateCheckboxInput(session = session, inputId = "selectText", value = 1 - input$selectSliders)
+  })
+  observeEvent(input$selectText, {
+    updateCheckboxInput(session = session, inputId = "selectSliders", value = 1 - input$selectText)
+  })
   
   
   output$sortedChart <- renderPlotly({
