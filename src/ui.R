@@ -1,8 +1,9 @@
 library(shiny)
+library(plotly)
 
 ui <- navbarPage('MacroView', # App title goes here!
                  tabPanel('Dashboard', # first navbar page
-                          titlePanel("Where our main dashboard lives"),
+                          titlePanel("Macroview Main Dashboard"),
                   ),
                  tabPanel('About', 'A Page to display some other static information'), 
                  tabPanel('Data', 'A Page to display some other static information'),
