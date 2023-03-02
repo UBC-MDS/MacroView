@@ -50,17 +50,33 @@ observeEvent(input$carbSlider,  {
 })
 
 #Main Plot
+#If using Sliders
 observeEvent(input$selectSliders,{
   df <- data.frame(
-      nutrients = c("cals", "prot", "carbs", "fat"),
-      values = c(as.numeric(input$calSliders), as.numeric(input$proteinSlider)/400 * as.numeric(input$calSliders),
-                 as.numeric(input$carbSlider)/400 * as.numeric(input$calSliders), 
-                 as.numeric(input$fatSlider)/900 * as.numeric(input$calSliders)))
+      nutrients = c("Cals", "Prot", "Carbs", "Fat"),
+      values = c(as.numeric(input$calSliders), as.numeric(input$proteinSlider)/100 * as.numeric(input$calSliders),
+                 as.numeric(input$carbSlider)/100 * as.numeric(input$calSliders), 
+                 as.numeric(input$fatSlider)/100 * as.numeric(input$calSliders)))
   
-  output$main_plot <- renderPlot(ggplot(data = df, aes(x = nutrients, y = values)) + geom_point())
+  output$main_plot <- renderPlot(ggplot(data = df, aes(x = nutrients, y = values)) + geom_point() +
+                                   labs(x = "Nutrient", y = "Calories") +
+                                   ylim(0, as.numeric(input$calSliders)))
   })
 
-observeEvent(input$select)
+#If using Manual
+observeEvent(input$selectText,{
+  cals <- as.numeric(input$proteinText)*4 + as.numeric(input$carbText)*4 + as.numeric(input$fatText)*9
+  df <- data.frame(
+    nutrients = c("Cals", "Prot", "Carbs", "Fat"),
+    values = c(cals, as.numeric(input$proteinText)*4, 
+              as.numeric(input$carbText)*4, as.numeric(input$fatText)*9))
+  
+  output$main_plot <- renderPlot(ggplot(data = df, aes(x = nutrients, y = values)) + geom_point() +
+                                   labs(x = "Nutrient", y = "Calories") +
+                                   ylim(0, cals)) 
+                                  
+                                    
+  })
   
 
              

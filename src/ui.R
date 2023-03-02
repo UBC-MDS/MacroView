@@ -13,7 +13,7 @@ ui <- navbarPage('MacroView', # App title goes here!
                               column(2,
                                      
                               titlePanel("Enter Nutrient Targets"),
-                              actionButton("selectSliders", "Use Sliders", class = "btn-block"),
+                              actionButton("selectSliders", "Plot Sliders", class = "btn-block"),
                               numericInput("calSliders", "Enter Calorie Goal", 
                                            value = 2000, min = 0, max = 20000),
                               sliderInput("proteinSlider", "Protein %", 
@@ -23,7 +23,7 @@ ui <- navbarPage('MacroView', # App title goes here!
                               sliderInput("fatSlider", "Fat %", 
                                           value = 25, min = 0, max = 100),
                               tableOutput("table_sliders"),
-                              actionButton("selectText", "Use Manual Input?", class = "btn-block"),
+                              actionButton("selectText", "Plot Manual Input?", class = "btn-block"),
                               textInput("proteinText", "Protein (Grams)",
                                         value = 100),
                               textInput("carbText", "Carbs (Grams)",
