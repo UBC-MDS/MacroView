@@ -3,7 +3,6 @@ library(dplyr)
 library(ggplot2)
 library(plotly)
 
-
 server <- function(input, output, session) {
   
 # Leftmost Panel, Output Current Targets
@@ -49,6 +48,72 @@ observeEvent(input$carbSlider,  {
   }
 })
 
+# read data and select relevent columns
+data <- read.csv('../data/cleaned_dataset.csv') |>
+  select(c('Food.name', 'Weight', 'Energy', 'Protein', 'Carbohydrate', 'Total.Fat'))
+data[nrow(data)+1,] <- c('None', 0, 0, 0, 0, 0)
+
+# input dropdown food selection
+selected_foods = list()
+food_list <- data$Food.name |> append('None')
+
+# populate dropdown lists
+observe({
+  updateSelectInput(session, inputId='select_food1', label='Select food', choices=food_list, selected='None')
+  updateSelectInput(session, inputId='select_food2', label='Select food', choices=food_list, selected='None')
+  updateSelectInput(session, inputId='select_food3', label='Select food', choices=food_list, selected='None')
+  updateSelectInput(session, inputId='select_food4', label='Select food', choices=food_list, selected='None')
+  updateSelectInput(session, inputId='select_food5', label='Select food', choices=food_list, selected='None')
+})
+
+# update total input food energy table to be plotted
+reactive_data <- reactive({
+  f1 <- data |>
+    filter(Food.name == input$select_food1)
+  f2 <- data |>
+    filter(Food.name == input$select_food2)
+  f3 <- data |>
+    filter(Food.name == input$select_food3)
+  f4 <- data |>
+    filter(Food.name == input$select_food4)
+  f5 <- data |>
+    filter(Food.name == input$select_food5)
+  
+  cal <- as.numeric(f1[[3]])*(input$g1/as.numeric(f1[[2]])) + as.numeric(f2[[3]])*(input$g2/as.numeric(f1[[2]]))
+  + as.numeric(f3[[3]])*(input$g3/as.numeric(f1[[2]])) + as.numeric(f4[[3]])*(input$g4/as.numeric(f1[[2]])) 
+  + as.numeric(f5[[3]])*(input$g5/as.numeric(f1[[2]]))
+  if (length(cal)==0){
+    cal <- 0
+  }
+  
+  prot <- 4*as.numeric(f1[[4]])*(input$g1/as.numeric(f1[[2]])) + 4*as.numeric(f2[[4]])*(input$g2/as.numeric(f1[[2]]))
+  + 4*as.numeric(f3[[4]])*(input$g3/as.numeric(f1[[2]])) + 4*as.numeric(f4[[4]])*(input$g4/as.numeric(f1[[2]])) 
+  + 4*as.numeric(f5[[4]])*(input$g5/as.numeric(f1[[2]]))
+  if (length(prot)==0){
+    prot <- 0
+  }
+  
+  carbs <- 4*as.numeric(f1[[5]])*(input$g1/as.numeric(f1[[2]])) + 4*as.numeric(f2[[5]])*(input$g2/as.numeric(f1[[2]]))
+  + 4*as.numeric(f3[[5]])*(input$g3/as.numeric(f1[[2]])) + 4*as.numeric(f4[[5]])*(input$g4/as.numeric(f1[[2]])) 
+  + 4*as.numeric(f5[[5]])*(input$g5/as.numeric(f1[[2]]))
+  if (length(carbs)==0){
+    carbs <- 0
+  }
+  
+  fat <- 9*as.numeric(f1[[6]])*(input$g1/as.numeric(f1[[2]])) + 9*as.numeric(f2[[6]])*(input$g2/as.numeric(f1[[2]]))
+  + 9*as.numeric(f3[[6]])*(input$g3/as.numeric(f1[[2]])) + 9*as.numeric(f4[[6]])*(input$g4/as.numeric(f1[[2]])) 
+  + 9*as.numeric(f5[[6]])*(input$g5/as.numeric(f1[[2]]))
+  if (length(fat)==0){
+    fat <- 0
+  }
+  
+  input_foods <- data.frame(
+    nutrients = c("Cals", "Prot", "Carbs", "Fat"),
+    values = c(cal, prot, carbs, fat)
+  )
+})
+
+
 #Main Plot
 #If using Sliders
 observeEvent(input$selectSliders,{
@@ -58,9 +123,18 @@ observeEvent(input$selectSliders,{
                  as.numeric(input$carbSlider)/100 * as.numeric(input$calSliders), 
                  as.numeric(input$fatSlider)/100 * as.numeric(input$calSliders)))
   
-  output$main_plot <- renderPlot(ggplot(data = df, aes(x = nutrients, y = values)) + geom_point() +
-                                   labs(x = "Nutrient", y = "Calories") +
-                                   ylim(0, as.numeric(input$calSliders)))
+  # get summay data from food input 
+  input_foods <- reactive_data()
+  df['values_input'] <- input_foods['values']
+  
+  # plot things
+  plot1 <- ggplot(data = df) + 
+    geom_point(aes(x = nutrients, y = values)) +
+    geom_col(aes(x = nutrients, y = values_input), alpha=0.5)
+    labs(x = "Nutrient", y = "Calories") +
+    ylim(0, as.numeric(input$calSliders))
+  
+  output$main_plot <- renderPlot(plot1)
   })
 
 #If using Manual
@@ -71,15 +145,21 @@ observeEvent(input$selectText,{
     values = c(cals, as.numeric(input$proteinText)*4, 
               as.numeric(input$carbText)*4, as.numeric(input$fatText)*9))
   
-  output$main_plot <- renderPlot(ggplot(data = df, aes(x = nutrients, y = values)) + geom_point() +
-                                   labs(x = "Nutrient", y = "Calories") +
-                                   ylim(0, cals)) 
-                                  
-                                    
+  # get summay data from food input
+  input_foods <- reactive_data()
+  df['values_input'] <- input_foods['values']
+  
+  # plot things
+  plot2 <- ggplot(data = df) + 
+    geom_point(aes(x = nutrients, y = values)) +
+    geom_col(aes(x = nutrients, y = values_input), alpha=0.5)
+    labs(x = "Nutrient", y = "Calories") +
+    ylim(0, cals) 
+  
+  output$main_plot <- renderPlot(plot2) 
+                              
   })
   
-
-             
         
 
 
