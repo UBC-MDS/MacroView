@@ -21,4 +21,3 @@ Overall this week we were able to implement the baseline functionality successfu
 * Ideally we need to add more entry boxes or find a way to make sure a new one is generated when all are used.
 * We should change up the colouring/ marks used in the main plot to make it more appealing. We are waiting to decide on the overall theme so that it matches.
 * Matching food inputs with the dataset is a little frustrating as some of the food names are non intuitive. Some form of regex matching, or even very simple NLP would be helpful to make usage less frustrating
-* We are still waiting on one set of primary visualisations (pie charts displaying remaining proportion/ grams for each macronutrient). We are hoping to have this complete before the milestone 2 release date.
