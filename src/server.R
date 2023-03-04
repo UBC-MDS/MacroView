@@ -53,7 +53,7 @@ observeEvent(input$carbSlider,  {
 })
 
 # read data and select relevent columns
-data <- read.csv('../data/cleaned_dataset.csv') |>
+data <- read.csv('https://raw.githubusercontent.com/UBC-MDS/MacroView/main/data/cleaned_dataset.csv') |>
   select(c('Food.name', 'Weight', 'Energy', 'Protein', 'Carbohydrate', 'Total.Fat'))
 data[nrow(data)+1,] <- c('None', 1, 0, 0, 0, 0)
 
@@ -316,7 +316,7 @@ observeEvent(input$selectText,{
   
 #Statistics/ Ranking Plot Tab
   output$sortedChart <- renderPlotly({
-    data <- read.csv('../data/cleaned_dataset.csv') |> rename(name = Food.name)
+    data <- read.csv('https://raw.githubusercontent.com/UBC-MDS/MacroView/main/data/cleaned_dataset.csv') |> rename(name = Food.name)
     specCol <- data[, gsub(" ", ".", input$component, fixed=TRUE)]
     data$colByWeight <- ifelse(data$Weight == 0, 0, specCol / data$Weight)
     
