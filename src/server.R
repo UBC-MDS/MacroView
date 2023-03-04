@@ -1,6 +1,10 @@
 library(shiny)
 library(dplyr)
+library(tidyr)
+library(forcats)
 library(ggplot2)
+library(scales)
+library(RColorBrewer)
 library(plotly)
 
 server <- function(input, output, session) {
@@ -114,14 +118,93 @@ observeEvent(input$selectSliders,{
   # get summay data from food input 
   input_foods <- reactive_data()
   df['values_input'] <- input_foods['values']
-  # plot things
+
+  
+  df <- df |> mutate(nutrients = as_factor(nutrients) |> fct_relevel(c("Fat", "Carbs", "Prot", "Cals")))
+  
+  cals_input <- df |> filter(nutrients == "Cals") |> pull(values_input)
+  cals_goal <- df |> filter(nutrients == "Cals") |> pull(values)
+
+  # Main plot
+
   plot1 <- ggplot(data = df) + 
-    geom_point(aes(x = nutrients, y = values)) +
-    geom_col(aes(x = nutrients, y = values_input), alpha=0.5)
+    geom_point(aes(x = nutrients, y = values), shape = '-', stroke = 15, size = 15) +
+    geom_col(aes(x = nutrients, y = values_input, fill = nutrients), alpha=0.7, colour = "black") +
     labs(x = "Nutrient", y = "Calories") +
-    ylim(0, as.numeric(input$calSliders))
+    ylim(0, max(cals_input, cals_goal)) +
+    theme_bw(base_size = 20) +
+    theme(
+      legend.key.size = unit(1, 'cm'),
+      legend.key.height = unit(1, 'cm'),
+      legend.key.width = unit(1, 'cm'),
+    ) +
+    scale_fill_brewer(palette = 'Dark2')
   
   output$main_plot <- renderPlot(plot1)
+  
+  
+  # Calculate proportions
+  prop_df <- df |> filter(nutrients != "Cals")
+  prop_df['goal'] <- prop_df['values'] / sum(prop_df['values'])
+  prop_df['input'] <- prop_df['values_input'] / sum(prop_df['values_input'])
+  prop_df <- prop_df |>
+    select(c('nutrients', 'goal', 'input')) |> 
+    pivot_longer(2:3, names_to = 'field', values_to = 'prop') |> 
+    mutate(nutrients = fct_rev(nutrients))
+  
+  cals_df <- data.frame(
+    field = c('goal', 'input'),
+    cals = c(cals_goal, cals_input),
+    prop = c(1.17, 1.17),
+    nutrients = c('Carbs', 'Carbs')
+  )
+  
+  
+  # Sub plot
+  subplot1 <- ggplot(prop_df) +
+    aes(
+      y = field,
+      x = prop,
+      fill = nutrients
+    ) +
+    geom_bar(
+      stat = "identity",
+      colour = 'black',
+      alpha = 0.7
+    ) +
+    geom_text(
+      aes(label = ifelse(prop >= 0.05, paste0(sprintf("%.0f", prop*100),"%"),"")),
+      position = position_stack(vjust = 0.5),
+      colour = "black",
+      fontface = "bold",
+      size = 6
+    ) +
+    scale_x_continuous(breaks = c(0, .25, .5, .75, 1), labels = percent_format()) +
+    labs(
+      y = "",
+      x = "",
+      fill = ""
+    ) +
+    theme_bw(base_size = 20) +
+    theme(
+      legend.key.size = unit(1, 'cm'),
+      legend.key.height = unit(1, 'cm'),
+      legend.key.width = unit(1, 'cm'),
+    ) +
+    scale_fill_manual(values = rev(brewer.pal(n=3, "Dark2"))) +
+    geom_text(
+      aes(label = paste(round(cals, 0), "\ncalories")),
+      data = cals_df,
+      size = 6,
+      hjust = 0.75,
+      colour = brewer.pal(n=4, "Dark2")[4],
+      fontface = "bold"
+    ) +
+    guides(fill = guide_legend(reverse = TRUE))
+  
+  
+  
+  output$sub_plot <- renderPlot(subplot1)
   })
 
 #If using Manual
@@ -136,14 +219,91 @@ observeEvent(input$selectText,{
   input_foods <- reactive_data()
   df['values_input'] <- input_foods['values']
   
-  # plot things
-  plot2 <- ggplot(data = df) + 
-    geom_point(aes(x = nutrients, y = values)) +
-    geom_col(aes(x = nutrients, y = values_input), alpha=0.5)
-    labs(x = "Nutrient", y = "Calories") +
-    ylim(0, cals) 
+  df <- df |> mutate(nutrients = as_factor(nutrients) |> fct_relevel(c("Fat", "Carbs", "Prot", "Cals")))
   
-  output$main_plot <- renderPlot(plot2) 
+  cals_input <- df |> filter(nutrients == "Cals") |> pull(values_input)
+  cals_goal <- df |> filter(nutrients == "Cals") |> pull(values)
+  
+  
+  # Main plot
+  plot2 <- ggplot(data = df) + 
+    geom_point(aes(x = nutrients, y = values), shape = '-', stroke = 15, size = 15) +
+    geom_col(aes(x = nutrients, y = values_input, fill = nutrients), alpha=0.7, colour = "black") +
+    labs(x = "Nutrient", y = "Calories") +
+    ylim(0, max(cals_input, cals_goal)) +
+    theme_bw(base_size = 20) +
+    theme(
+      legend.key.size = unit(1, 'cm'),
+      legend.key.height = unit(1, 'cm'),
+      legend.key.width = unit(1, 'cm'),
+    ) +
+    scale_fill_brewer(palette = 'Dark2')
+  
+  output$main_plot <- renderPlot(plot2)
+  
+  
+  # Calculate proportions
+  prop_df <- df |> filter(nutrients != "Cals")
+  prop_df['goal'] <- prop_df['values'] / sum(prop_df['values'])
+  prop_df['input'] <- prop_df['values_input'] / sum(prop_df['values_input'])
+  prop_df <- prop_df |>
+    select(c('nutrients', 'goal', 'input')) |> 
+    pivot_longer(2:3, names_to = 'field', values_to = 'prop') |> 
+    mutate(nutrients = fct_rev(nutrients))
+  
+  cals_df <- data.frame(
+    field = c('goal', 'input'),
+    cals = c(cals_goal, cals_input),
+    prop = c(1.17, 1.17),
+    nutrients = c('Carbs', 'Carbs')
+  )
+  
+  
+  # Sub plot
+  subplot2 <- ggplot(prop_df) +
+    aes(
+      y = field,
+      x = prop,
+      fill = nutrients
+    ) +
+    geom_bar(
+      stat = "identity",
+      colour = 'black',
+      alpha = 0.7
+    ) +
+    geom_text(
+      aes(label = ifelse(prop >= 0.05, paste0(sprintf("%.0f", prop*100),"%"),"")),
+      position = position_stack(vjust = 0.5),
+      colour = "black",
+      fontface = "bold",
+      size = 6
+    ) +
+    scale_x_continuous(breaks = c(0, .25, .5, .75, 1), labels = percent_format()) +
+    labs(
+      y = "",
+      x = "",
+      fill = ""
+    ) +
+    theme_bw(base_size = 20) +
+    theme(
+      legend.key.size = unit(1, 'cm'),
+      legend.key.height = unit(1, 'cm'),
+      legend.key.width = unit(1, 'cm'),
+    ) +
+    scale_fill_manual(values = rev(brewer.pal(n=3, "Dark2"))) +
+    geom_text(
+      aes(label = paste(round(cals, 0), "\ncalories")),
+      data = cals_df,
+      size = 6,
+      hjust = 0.75,
+      colour = brewer.pal(n=4, "Dark2")[4],
+      fontface = "bold"
+    ) +
+    guides(fill = guide_legend(reverse = TRUE))
+  
+  
+  
+  output$sub_plot <- renderPlot(subplot2)
                               
   })
   
