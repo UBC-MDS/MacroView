@@ -1,0 +1,13 @@
+name: MacroView-v1
+title: MacroView-v1
+username:
+account: macroview
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 8477794
+bundleId: 6916253
+url: https://macroview.shinyapps.io/MacroView-v1/
+when: 1677964588.85125
+lastSyncTime: 1677964588.85126
+asMultiple: FALSE
+asStatic: FALSE
