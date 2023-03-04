@@ -157,10 +157,17 @@ observeEvent(input$selectSliders,{
     ) +
     scale_x_continuous(labels = percent_format()) +
     labs(
-      y = "Percent",
-      x = "None",
-      fill = "Nutrient"
-    )
+      y = "",
+      x = "",
+      fill = ""
+    ) +
+    theme_bw(base_size = 20) +
+    theme(
+      legend.key.size = unit(1, 'cm'),
+      legend.key.height = unit(1, 'cm'),
+      legend.key.width = unit(1, 'cm'),
+    ) +
+    scale_fill_brewer(palette = 'Dark2')
   
   output$sub_plot <- renderPlot(subplot1)
   })
