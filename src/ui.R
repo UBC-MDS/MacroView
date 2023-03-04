@@ -210,8 +210,10 @@ ui <- navbarPage(
       # Right Panel (Visualizations)
       column(
         5,
-        titlePanel("Daily Totals"),
-        plotOutput("main_plot", width = "600px")
+        titlePanel("Daily Nutrient Totals"),
+        plotOutput("main_plot", width = "600px"),
+        titlePanel("Macronutrient Proportions"),
+        plotOutput("sub_plot", width = "600px")
       )
       # End Right Panel
       

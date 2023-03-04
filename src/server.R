@@ -1,6 +1,8 @@
 library(shiny)
 library(dplyr)
+library(tidyr)
 library(ggplot2)
+library(scales)
 library(plotly)
 
 server <- function(input, output, session) {
@@ -114,7 +116,9 @@ observeEvent(input$selectSliders,{
   # get summay data from food input 
   input_foods <- reactive_data()
   df['values_input'] <- input_foods['values']
-  # plot things
+
+  # Main plot
+
   plot1 <- ggplot(data = df) + 
     geom_point(aes(x = nutrients, y = values)) +
     geom_col(aes(x = nutrients, y = values_input), alpha=0.5)
@@ -122,6 +126,43 @@ observeEvent(input$selectSliders,{
     ylim(0, as.numeric(input$calSliders))
   
   output$main_plot <- renderPlot(plot1)
+  
+  
+  # Calculate proportions
+  prop_df <- df |> filter(nutrients != "Cals")
+  prop_df['goal'] <- prop_df['values'] / sum(prop_df['values'])
+  prop_df['input'] <- prop_df['values_input'] / sum(prop_df['values_input'])
+  prop_df <- prop_df |>
+    select(c('nutrients', 'goal', 'input')) |> 
+    pivot_longer(2:3, names_to = 'field', values_to = 'prop')
+  
+  
+  # Sub plot
+  subplot1 <- ggplot(prop_df) +
+    aes(
+      y = field,
+      x = prop,
+      fill = nutrients
+    ) +
+    geom_bar(
+      stat = "identity",
+      colour = 'black'
+    ) +
+    geom_text(
+      aes(label = ifelse(prop >= 0.05, paste0(sprintf("%.0f", prop*100),"%"),"")),
+      position = position_stack(vjust = 0.5),
+      colour = "black",
+      fontface = "bold",
+      size = 3.5
+    ) +
+    scale_x_continuous(labels = percent_format()) +
+    labs(
+      y = "Percent",
+      x = "None",
+      fill = "Nutrient"
+    )
+  
+  output$sub_plot <- renderPlot(subplot1)
   })
 
 #If using Manual
