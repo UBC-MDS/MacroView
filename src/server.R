@@ -137,6 +137,16 @@ observeEvent(input$selectSliders,{
     pivot_longer(2:3, names_to = 'field', values_to = 'prop')
   
   
+  cals_input <- df |> filter(nutrients == "Cals") |> pull(values_input)
+  cals_goal <- df |> filter(nutrients == "Cals") |> pull(values)
+  
+  cals_df <- data.frame(
+    field = c('goal', 'input'),
+    cals = c(cals_goal, cals_input),
+    prop = c(1.15, 1.15),
+    nutrients = c('Carbs', 'Carbs')
+  )
+  
   # Sub plot
   subplot1 <- ggplot(prop_df) +
     aes(
@@ -146,16 +156,16 @@ observeEvent(input$selectSliders,{
     ) +
     geom_bar(
       stat = "identity",
-      colour = 'black'
+      colour = 'black',
     ) +
     geom_text(
       aes(label = ifelse(prop >= 0.05, paste0(sprintf("%.0f", prop*100),"%"),"")),
       position = position_stack(vjust = 0.5),
       colour = "black",
       fontface = "bold",
-      size = 3.5
+      size = 6
     ) +
-    scale_x_continuous(labels = percent_format()) +
+    scale_x_continuous(breaks = c(0, .25, .5, .75, 1), labels = percent_format()) +
     labs(
       y = "",
       x = "",
@@ -167,7 +177,15 @@ observeEvent(input$selectSliders,{
       legend.key.height = unit(1, 'cm'),
       legend.key.width = unit(1, 'cm'),
     ) +
-    scale_fill_brewer(palette = 'Dark2')
+    scale_fill_brewer(palette = 'Dark2') +
+    geom_text(
+      aes(label = paste(round(cals, 0), "\ncalories")),
+      data = cals_df,
+      size = 6,
+      hjust = 0.7
+    )
+  
+  
   
   output$sub_plot <- renderPlot(subplot1)
   })
