@@ -51,11 +51,11 @@ observeEvent(input$carbSlider,  {
 # read data and select relevent columns
 data <- read.csv('../data/cleaned_dataset.csv') |>
   select(c('Food.name', 'Weight', 'Energy', 'Protein', 'Carbohydrate', 'Total.Fat'))
-data[nrow(data)+1,] <- c('None', 0, 0, 0, 0, 0)
+data[nrow(data)+1,] <- c('None', 1, 0, 0, 0, 0)
 
 # input dropdown food selection
 selected_foods = list()
-food_list <- data$Food.name |> append('None')
+food_list <- data$Food.name 
 
 # populate dropdown lists
 observe({
@@ -79,34 +79,22 @@ reactive_data <- reactive({
   f5 <- data |>
     filter(Food.name == input$select_food5)
   
-  cal <- as.numeric(f1[[3]])*(input$g1/as.numeric(f1[[2]])) + as.numeric(f2[[3]])*(input$g2/as.numeric(f1[[2]]))
-  + as.numeric(f3[[3]])*(input$g3/as.numeric(f1[[2]])) + as.numeric(f4[[3]])*(input$g4/as.numeric(f1[[2]])) 
-  + as.numeric(f5[[3]])*(input$g5/as.numeric(f1[[2]]))
-  if (length(cal)==0){
-    cal <- 0
-  }
-  
-  prot <- 4*as.numeric(f1[[4]])*(input$g1/as.numeric(f1[[2]])) + 4*as.numeric(f2[[4]])*(input$g2/as.numeric(f1[[2]]))
-  + 4*as.numeric(f3[[4]])*(input$g3/as.numeric(f1[[2]])) + 4*as.numeric(f4[[4]])*(input$g4/as.numeric(f1[[2]])) 
-  + 4*as.numeric(f5[[4]])*(input$g5/as.numeric(f1[[2]]))
-  if (length(prot)==0){
-    prot <- 0
-  }
-  
-  carbs <- 4*as.numeric(f1[[5]])*(input$g1/as.numeric(f1[[2]])) + 4*as.numeric(f2[[5]])*(input$g2/as.numeric(f1[[2]]))
-  + 4*as.numeric(f3[[5]])*(input$g3/as.numeric(f1[[2]])) + 4*as.numeric(f4[[5]])*(input$g4/as.numeric(f1[[2]])) 
-  + 4*as.numeric(f5[[5]])*(input$g5/as.numeric(f1[[2]]))
-  if (length(carbs)==0){
-    carbs <- 0
-  }
-  
-  fat <- 9*as.numeric(f1[[6]])*(input$g1/as.numeric(f1[[2]])) + 9*as.numeric(f2[[6]])*(input$g2/as.numeric(f1[[2]]))
-  + 9*as.numeric(f3[[6]])*(input$g3/as.numeric(f1[[2]])) + 9*as.numeric(f4[[6]])*(input$g4/as.numeric(f1[[2]])) 
-  + 9*as.numeric(f5[[6]])*(input$g5/as.numeric(f1[[2]]))
-  if (length(fat)==0){
-    fat <- 0
-  }
-  
+  cal = (as.numeric(f1[[3]])*(input$g1/as.numeric(f1[[2]])) + as.numeric(f2[[3]])*(input$g2/as.numeric(f2[[2]]))
+    + as.numeric(f3[[3]])*(input$g3/as.numeric(f3[[2]])) + as.numeric(f4[[3]])*(input$g4/as.numeric(f4[[2]])) 
+    + as.numeric(f5[[3]])*(input$g5/as.numeric(f5[[2]])))
+
+  prot <- (4*as.numeric(f1[[4]])*(input$g1/as.numeric(f1[[2]])) + 4*as.numeric(f2[[4]])*(input$g2/as.numeric(f2[[2]]))
+    + 4*as.numeric(f3[[4]])*(input$g3/as.numeric(f3[[2]])) + 4*as.numeric(f4[[4]])*(input$g4/as.numeric(f4[[2]])) 
+    + 4*as.numeric(f5[[4]])*(input$g5/as.numeric(f5[[2]])))
+
+  carbs <- (4*as.numeric(f1[[5]])*(input$g1/as.numeric(f1[[2]])) + 4*as.numeric(f2[[5]])*(input$g2/as.numeric(f2[[2]]))
+    + 4*as.numeric(f3[[5]])*(input$g3/as.numeric(f3[[2]])) + 4*as.numeric(f4[[5]])*(input$g4/as.numeric(f4[[2]])) 
+    + 4*as.numeric(f5[[5]])*(input$g5/as.numeric(f5[[2]])))
+
+  fat <- (9*as.numeric(f1[[6]])*(input$g1/as.numeric(f1[[2]])) + 9*as.numeric(f2[[6]])*(input$g2/as.numeric(f2[[2]]))
+    + 9*as.numeric(f3[[6]])*(input$g3/as.numeric(f3[[2]])) + 9*as.numeric(f4[[6]])*(input$g4/as.numeric(f4[[2]])) 
+    + 9*as.numeric(f5[[6]])*(input$g5/as.numeric(f5[[2]])))
+
   input_foods <- data.frame(
     nutrients = c("Cals", "Prot", "Carbs", "Fat"),
     values = c(cal, prot, carbs, fat)
@@ -126,7 +114,6 @@ observeEvent(input$selectSliders,{
   # get summay data from food input 
   input_foods <- reactive_data()
   df['values_input'] <- input_foods['values']
-  
   # plot things
   plot1 <- ggplot(data = df) + 
     geom_point(aes(x = nutrients, y = values)) +
