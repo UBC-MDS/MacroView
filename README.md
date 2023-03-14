@@ -1,6 +1,8 @@
 # MacroView
 
-Available at: https://macroview.shinyapps.io/MacroView-v1/
+[![shiny-deploy](https://github.com/UBC-MDS/MacroView/actions/workflows/deploy-app.yaml/badge.svg?branch=Chester-CICD)](https://github.com/UBC-MDS/MacroView/actions/workflows/deploy-app.yaml)
+
+Available at: https://macroview.shinyapps.io/MacroView/
 
 ## Group Members
 
