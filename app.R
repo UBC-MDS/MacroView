@@ -314,13 +314,16 @@ observeEvent(input$selectText,{
 #Statistics/ Ranking Plot Tab
   output$sortedChart <- renderPlotly({
     data <- read.csv('https://raw.githubusercontent.com/UBC-MDS/MacroView/main/data/cleaned_dataset.csv') |> rename(name = Food.name)
-    specCol <- data[, gsub(" ", ".", input$component, fixed=TRUE)]
-    data$colByWeight <- ifelse(data$Weight == 0, 0, specCol / data$Weight)
+    primaryCol <- data[, gsub(" ", ".", input$primarycomponent, fixed=TRUE)]
+    secondaryCol <- data[, gsub(" ", ".", input$secondarycomponent, fixed=TRUE)]
 
-    top_data <- data |> arrange(desc(colByWeight)) |> head(input$topK)
+    data$colByWeightPrimary <- ifelse(data$Weight == 0, 0, primaryCol / data$Weight)
+    data$colByWeightSecondary <- ifelse(data$Weight == 0, 0, secondaryCol / data$Weight)
+
+    top_data <- data |> arrange(desc(colByWeightPrimary), desc(colByWeightSecondary)) |> head(input$topK)
 
     top_data |>
-      plot_ly(x = ~reorder(name,-colByWeight), y = ~colByWeight) |>
+      plot_ly(x = ~reorder(name,-(colByWeightPrimary * 1000 + colByWeightSecondary)), y = ~colByWeightPrimary) |>
       add_bars() |> layout(title = 'Food ranked by energy/component, sorted', xaxis = list(title = 'Food Name'))
 
   })
@@ -338,11 +341,11 @@ ui <- navbarPage(
     headerPanel("Macroview Main Dashboard"),
     fluidPage(fluidRow(
       #2,
-      
+
       # Leftmost Input Panel
       column(
         #1
-        
+
         titlePanel("Enter Nutrient Targets"),
         actionButton("selectSliders", "Plot Sliders", class = "btn-block"),
         numericInput(
@@ -384,15 +387,15 @@ ui <- navbarPage(
         tableOutput("table_text"),
         width = 3,
         offset = 0
-        
+
       ),
       # END leftmost panel
-      
+
       # Middle Panel (Drop Downs)
       column(
         #2
         titlePanel("Food Entry"),
-        
+
         # mid panel row 1
         fluidRow(
           column(
@@ -422,7 +425,7 @@ ui <- navbarPage(
             offset = 0
           )
         ),
-        
+
         # mid panel row 2
         fluidRow(
           column(
@@ -448,7 +451,7 @@ ui <- navbarPage(
             offset = 0
           )
         ),
-        
+
         # mid panel row 3
         fluidRow(
           column(
@@ -474,7 +477,7 @@ ui <- navbarPage(
             offset = 0
           )
         ),
-        
+
         # mid panel row 4
         fluidRow(
           column(
@@ -500,7 +503,7 @@ ui <- navbarPage(
             offset = 0
           )
         ),
-        
+
         # mid panel row 5
         fluidRow(
           column(
@@ -526,14 +529,14 @@ ui <- navbarPage(
             offset = 0
           )
         ),
-        
+
         width = 3,
         offset = 0
       ),
       # End Middle Panel
-      
-      
-      
+
+
+
       # Right Panel (Visualizations)
       column(
         5,
@@ -543,27 +546,59 @@ ui <- navbarPage(
         plotOutput("sub_plot", width = "600px")
       )
       # End Right Panel
-      
-      
-      
-      
-      
+
+
+
+
+
     ))
   ),
-  
+
   tabPanel('About', 'A Page to display some other static information'),
   tabPanel('Data', 'A Page to display some other static information'),
   tabPanel('Download', 'A Page to display some other static information'),
-  
-  
+
+
   tabPanel(
     'Statistics',
     titlePanel("Get the Nutrition Rank!"),
     sidebarLayout(
       sidebarPanel(
         selectInput(
-          inputId = 'component',
-          label = 'Select a compoent to rank',
+          inputId = 'primarycomponent',
+          label = 'Select your primary component to rank',
+          choices = c(
+            'Energy',
+            'Protein',
+            'Carbohydrate',
+            'Total Sugar',
+            'Total Fat',
+            'Saturated Fat',
+            'Monounsaturated Fat',
+            'Polyunsaturated Fat',
+            'Cholesterol',
+            'Calcium',
+            'Iron',
+            'Sodium',
+            'Potassium',
+            'Magnesium',
+            'Phosphorus',
+            'Vitamin A',
+            'Lycopene',
+            'Folate',
+            'DHA',
+            'EPA',
+            'Vitamin D',
+            'Vitamin B12',
+            'Vitamin E',
+            'Trans Fat',
+            'Vitamin C'
+          ),
+          selected = 'Energy'
+        ),
+        selectInput(
+          inputId = 'secondarycomponent',
+          label = 'Select your secondary component to rank',
           choices = c(
             'Energy',
             'Protein',
@@ -601,11 +636,11 @@ ui <- navbarPage(
           value = 10
         )
       ),
-      
+
       mainPanel(plotlyOutput(outputId = 'sortedChart'))
     )
   )
-  
+
 )
 
 
