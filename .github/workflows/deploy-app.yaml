@@ -22,11 +22,11 @@ jobs:
       - uses: r-lib/actions/setup-renv@v2
 
       - name: Install rsconnect
-        run: install.packages("rsconnect")
+        run: install.packages(c("rsconnect", "shiny", "dplyr", "tidyr", "forcats", "ggplot2", "scales", "RColorBrewer", "plotly"))
         shell: Rscript {0}
 
       - name: Authorize and deploy app
-        env: 
+        env:
           # Provide your app name, account name, and server to be deployed below
           APPNAME: MacroView
           ACCOUNT: macroview
