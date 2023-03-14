@@ -1,7 +1,7 @@
 
 on:
   push:
-    branches: [main, master]
+    branches: [main, master, Chester-CICD]
 
 name: shiny-deploy
 
