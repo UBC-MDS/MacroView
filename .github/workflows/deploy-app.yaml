@@ -22,7 +22,7 @@ jobs:
       - uses: r-lib/actions/setup-renv@v2
 
       - name: Install rsconnect
-        run: install.packages(c("rsconnect", "shiny", "dplyr", "tidyr", "forcats", "ggplot2", "scales", "RColorBrewer", "plotly"))
+        run: install.packages(c("rsconnect", "shiny", "dplyr", "tidyr", "forcats", "ggplot2", "scales", "RColorBrewer", "plotly", "shinythemes"))
         shell: Rscript {0}
 
       - name: Authorize and deploy app
