@@ -2,13 +2,14 @@ library(shiny)
 library(plotly)
 
 ui <- navbarPage(
+  theme = bslib::bs_theme(bootswatch = 'cerulean'),
   'MacroView',
   # App title goes here!
   # dashboard tab
   tabPanel(
     'Dashboard',
     # first navbar page
-    headerPanel("Macroview Main Dashboard"),
+    h1("Macroview Main Dashboard"),
     fluidPage(fluidRow(
       #2,
       
@@ -16,7 +17,7 @@ ui <- navbarPage(
       column(
         #1
         
-        titlePanel("Enter Nutrient Targets"),
+        h4("Enter Nutrient Targets"),
         actionButton("selectSliders", "Plot Sliders", class = "btn-block"),
         numericInput(
           "calSliders",
@@ -55,7 +56,7 @@ ui <- navbarPage(
         textInput("fatText", "Fat (Grams)",
                   value = 100),
         tableOutput("table_text"),
-        width = 3,
+        width = 2,
         offset = 0
         
       ),
@@ -64,26 +65,24 @@ ui <- navbarPage(
       # Middle Panel (Drop Downs)
       column(
         #2
-        titlePanel("Food Entry"),
+        h4("Food Entry"),
         
         # mid panel row 1
         fluidRow(
           column(
-            h3('Foods'),
-            #titlePanel("Food Entry"),
+            h6('Foods'),
             selectInput(
               inputId = 'select_food1',
               label = 'Select food 1',
               choices = 'Names',
               selected = 'None',
-              width = '100%'
+              width = '100%',
             ),
             width = 9,
             offset = 0
           ),
           column(
-            h3('Weights'),
-            #titlePanel("Weight"),
+            h6('Weights'),
             numericInput(
               "g1",
               "Grams",

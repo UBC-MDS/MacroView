@@ -332,21 +332,22 @@ observeEvent(input$selectText,{
 
 
 ui <- navbarPage(
+  theme = bslib::bs_theme(bootswatch = 'cerulean'),
   'MacroView',
   # App title goes here!
   # dashboard tab
   tabPanel(
     'Dashboard',
     # first navbar page
-    headerPanel("Macroview Main Dashboard"),
+    h1("Macroview Main Dashboard"),
     fluidPage(fluidRow(
       #2,
-
+      
       # Leftmost Input Panel
       column(
         #1
-
-        titlePanel("Enter Nutrient Targets"),
+        
+        h4("Enter Nutrient Targets"),
         actionButton("selectSliders", "Plot Sliders", class = "btn-block"),
         numericInput(
           "calSliders",
@@ -385,35 +386,33 @@ ui <- navbarPage(
         textInput("fatText", "Fat (Grams)",
                   value = 100),
         tableOutput("table_text"),
-        width = 3,
+        width = 2,
         offset = 0
-
+        
       ),
       # END leftmost panel
-
+      
       # Middle Panel (Drop Downs)
       column(
         #2
-        titlePanel("Food Entry"),
-
+        h4("Food Entry"),
+        
         # mid panel row 1
         fluidRow(
           column(
-            h3('Foods'),
-            #titlePanel("Food Entry"),
+            h6('Foods'),
             selectInput(
               inputId = 'select_food1',
               label = 'Select food 1',
               choices = 'Names',
               selected = 'None',
-              width = '100%'
+              width = '100%',
             ),
             width = 9,
             offset = 0
           ),
           column(
-            h3('Weights'),
-            #titlePanel("Weight"),
+            h6('Weights'),
             numericInput(
               "g1",
               "Grams",
@@ -425,7 +424,7 @@ ui <- navbarPage(
             offset = 0
           )
         ),
-
+        
         # mid panel row 2
         fluidRow(
           column(
@@ -451,7 +450,7 @@ ui <- navbarPage(
             offset = 0
           )
         ),
-
+        
         # mid panel row 3
         fluidRow(
           column(
@@ -477,7 +476,7 @@ ui <- navbarPage(
             offset = 0
           )
         ),
-
+        
         # mid panel row 4
         fluidRow(
           column(
@@ -503,7 +502,7 @@ ui <- navbarPage(
             offset = 0
           )
         ),
-
+        
         # mid panel row 5
         fluidRow(
           column(
@@ -529,14 +528,14 @@ ui <- navbarPage(
             offset = 0
           )
         ),
-
+        
         width = 3,
         offset = 0
       ),
       # End Middle Panel
-
-
-
+      
+      
+      
       # Right Panel (Visualizations)
       column(
         5,
@@ -546,59 +545,27 @@ ui <- navbarPage(
         plotOutput("sub_plot", width = "600px")
       )
       # End Right Panel
-
-
-
-
-
+      
+      
+      
+      
+      
     ))
   ),
-
+  
   tabPanel('About', 'A Page to display some other static information'),
   tabPanel('Data', 'A Page to display some other static information'),
   tabPanel('Download', 'A Page to display some other static information'),
-
-
+  
+  
   tabPanel(
     'Statistics',
     titlePanel("Get the Nutrition Rank!"),
     sidebarLayout(
       sidebarPanel(
         selectInput(
-          inputId = 'primarycomponent',
-          label = 'Select your primary component to rank',
-          choices = c(
-            'Energy',
-            'Protein',
-            'Carbohydrate',
-            'Total Sugar',
-            'Total Fat',
-            'Saturated Fat',
-            'Monounsaturated Fat',
-            'Polyunsaturated Fat',
-            'Cholesterol',
-            'Calcium',
-            'Iron',
-            'Sodium',
-            'Potassium',
-            'Magnesium',
-            'Phosphorus',
-            'Vitamin A',
-            'Lycopene',
-            'Folate',
-            'DHA',
-            'EPA',
-            'Vitamin D',
-            'Vitamin B12',
-            'Vitamin E',
-            'Trans Fat',
-            'Vitamin C'
-          ),
-          selected = 'Energy'
-        ),
-        selectInput(
-          inputId = 'secondarycomponent',
-          label = 'Select your secondary component to rank',
+          inputId = 'component',
+          label = 'Select a compoent to rank',
           choices = c(
             'Energy',
             'Protein',
@@ -636,11 +603,11 @@ ui <- navbarPage(
           value = 10
         )
       ),
-
+      
       mainPanel(plotlyOutput(outputId = 'sortedChart'))
     )
   )
-
+  
 )
 
 
