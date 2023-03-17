@@ -544,15 +544,46 @@ ui <- navbarPage(
   tabPanel('Data', 'A Page to display some other static information'),
   tabPanel('Download', 'A Page to display some other static information'),
   
-  
   tabPanel(
     'Statistics',
     titlePanel("Get the Nutrition Rank!"),
     sidebarLayout(
       sidebarPanel(
         selectInput(
-          inputId = 'component',
-          label = 'Select a compoent to rank',
+          inputId = 'primarycomponent',
+          label = 'Select your primary component to rank',
+          choices = c(
+            'Energy',
+            'Protein',
+            'Carbohydrate',
+            'Total Sugar',
+            'Total Fat',
+            'Saturated Fat',
+            'Monounsaturated Fat',
+            'Polyunsaturated Fat',
+            'Cholesterol',
+            'Calcium',
+            'Iron',
+            'Sodium',
+            'Potassium',
+            'Magnesium',
+            'Phosphorus',
+            'Vitamin A',
+            'Lycopene',
+            'Folate',
+            'DHA',
+            'EPA',
+            'Vitamin D',
+            'Vitamin B12',
+            'Vitamin E',
+            'Trans Fat',
+            'Vitamin C'
+          ),
+          selected = 'Energy'
+        ),
+        selectInput(
+          inputId = 'secondarycomponent',
+          label = 'Select your secondary component to rank',
           choices = c(
             'Energy',
             'Protein',
@@ -594,7 +625,6 @@ ui <- navbarPage(
       mainPanel(plotlyOutput(outputId = 'sortedChart'))
     )
   )
-  
 )
 
 
