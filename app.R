@@ -421,7 +421,7 @@ server <- function(input, output, session) {
           protein_grams = Protein,
           carbohydrate_grams = Carbohydrate,
           total_fat_grams = Total.Fat
-        ) |> 
+        )
       write.csv(data, file)
     }
   )
