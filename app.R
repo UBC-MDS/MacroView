@@ -395,15 +395,15 @@ server <- function(input, output, session) {
                 overwrite = TRUE)
       
       # Set up parameters to pass to Rmd document
-      params <- list(
-        input_foods = 0, # temp
-        totals = 1,      # temp
-        main_plot = 2,   # temp
-        proportions = 3, # temp
-        sub_plot = 4     # temp
-      )
-      # data <- get_data_sliders()
-      # params <- get_report_params(data)
+      # params <- list(
+      #   input_foods = 0, # temp
+      #   totals = 1,      # temp
+      #   main_plot = 2,   # temp
+      #   proportions = 3, # temp
+      #   sub_plot = 4     # temp
+      # )
+      data <- get_data_sliders()
+      params <- get_report_params(data)
       
       # Notification
       id <- showNotification(
@@ -432,15 +432,15 @@ server <- function(input, output, session) {
                 overwrite = TRUE)
       
       # Set up parameters to pass to Rmd document
-      params <- list(
-        input_foods = 0, # temp
-        totals = 1,      # temp
-        main_plot = 2,   # temp
-        proportions = 3, # temp
-        sub_plot = 4     # temp
-      )
-      # data <- get_data_sliders()
-      # params <- get_report_params(data)
+      # params <- list(
+      #   input_foods = 0, # temp
+      #   totals = 1,      # temp
+      #   main_plot = 2,   # temp
+      #   proportions = 3, # temp
+      #   sub_plot = 4     # temp
+      # )
+      data <- get_data_sliders()
+      params <- get_report_params(data)
       
       # Notification
       id <- showNotification(
@@ -892,23 +892,26 @@ ui <- navbarPage(
     # first navbar page
     h2("Download the Food Dataset"),
       mainPanel(
+                  fluidRow(
                        column(
+                         "",
+                         "",
                          h4("Download Dataset"),
+                         "",
                          width = 12,
-                         offset = 6,
-                       ),
+                         offset = 0.2,
+                       ),),
                         # Download button
-                       column(
+                       fluidRow(column(
                          downloadButton("download_dataset"),
-                         width = 5,
-                         offset = 6,
-                       ),
-                       column(
-                         'Note that this data was provided by Health Canada.',
-                         
-                         width = 5,
-                         offset = 6,
-                       )
+                         width = 10,
+                         offset = 0.2,
+                       ),),
+                       fluidRow(column(
+                         'Please note that this data was provided by Health Canada.',
+                         width = 10,
+                         offset = 0.2,
+                       ),),
                  )
       ),
   
