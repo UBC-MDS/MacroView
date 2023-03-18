@@ -14,3 +14,13 @@ test_that("{shinytest2} recording: main-dash_plot-manual-button", {
   app$click("selectText")
   app$expect_values()
 })
+
+
+test_that("{shinytest2} recording: main-dash_food-entry", {
+  app <- AppDriver$new(name = "main-dash_food-entry", seed = 123, height = 656, width = 1235)
+  app$set_inputs(select_food4 = "Mango")
+  app$set_inputs(g4 = 150)
+  app$expect_values()
+  app$click("selectSliders")
+  app$expect_values()
+})
