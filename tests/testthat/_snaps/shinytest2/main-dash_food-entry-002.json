@@ -5,27 +5,27 @@
     "carbText": "200",
     "fatSlider": 30,
     "fatText": "65",
-    "g1": 1000,
+    "g1": 500,
     "g2": 400,
     "g3": 200,
-    "g4": 100,
-    "g5": 3,
+    "g4": 150,
+    "g5": 0,
     "primarycomponent": "Energy",
     "proteinSlider": 30,
     "proteinText": "150",
     "secondarycomponent": "Energy",
     "selectSliders": 1,
     "selectText": 0,
-    "select_food1": "Salmon, smoked",
-    "select_food2": "Quinoa, cooked",
-    "select_food3": "Apple with skin (7cm.diam)",
-    "select_food4": "Peanut butter, natural",
-    "select_food5": "Yogourt, vanilla or fruit, 1-2% M.F.",
+    "select_food1": "Chicken, ground, lean, cooked",
+    "select_food2": "Rice, brown, long-grain, cooked",
+    "select_food3": "Banana",
+    "select_food4": "Mango",
+    "select_food5": "None",
     "topK": 10
   },
   "output": {
     "main_plot": {
-      "src": "[image data hash: f4f590c3b7c3a81bd1050be853d51b45]",
+      "src": "[image data hash: c0801cc63dcdc0889eebd445f49c2ca3]",
       "width": 1000,
       "height": 400,
       "alt": "Plot object",
@@ -45,8 +45,8 @@
             "domain": {
               "left": 0.4,
               "right": 4.6,
-              "bottom": -112.971271229346,
-              "top": 2372.39669581626,
+              "bottom": -100,
+              "top": 2100,
               "discrete_limits": {
                 "x": [
                   "Fat",
@@ -75,7 +75,7 @@
       }
     },
     "sub_plot": {
-      "src": "[image data hash: 273c023ebe538c82df9b2071bd235fa9]",
+      "src": "[image data hash: aab2d79563415a6c326d35a4b3a5973c]",
       "width": 1000,
       "height": 400,
       "alt": "Plot object",

@@ -2,9 +2,9 @@
   "input": {
     "calSliders": 2000,
     "carbSlider": 40,
-    "carbText": "10",
+    "carbText": "200",
     "fatSlider": 30,
-    "fatText": "100",
+    "fatText": "65",
     "g1": 500,
     "g2": 400,
     "g3": 200,
@@ -12,9 +12,9 @@
     "g5": 0,
     "primarycomponent": "Energy",
     "proteinSlider": 30,
-    "proteinText": "250",
+    "proteinText": "150",
     "secondarycomponent": "Energy",
-    "selectSliders": 1,
+    "selectSliders": 0,
     "selectText": 1,
     "select_food1": "Chicken, ground, lean, cooked",
     "select_food2": "Rice, brown, long-grain, cooked",
@@ -25,7 +25,7 @@
   },
   "output": {
     "main_plot": {
-      "src": "[image data hash: 4df72e55a15fed586bff4e52a9a46d0a]",
+      "src": "[image data hash: 753e4684dd29cbe8fc0b826c0579a0eb]",
       "width": 1000,
       "height": 400,
       "alt": "Plot object",
@@ -45,8 +45,8 @@
             "domain": {
               "left": 0.4,
               "right": 4.6,
-              "bottom": -97,
-              "top": 2037,
+              "bottom": -99.25,
+              "top": 2084.25,
               "discrete_limits": {
                 "x": [
                   "Fat",
@@ -75,7 +75,7 @@
       }
     },
     "sub_plot": {
-      "src": "[image data hash: 1224f9496d73f03f8d90c4b35fef0672]",
+      "src": "[image data hash: 1539e29804aee92daaf8ee691ccfd2cb]",
       "width": 1000,
       "height": 400,
       "alt": "Plot object",
@@ -124,7 +124,7 @@
       }
     },
     "table_sliders": "<table  class = 'table shiny-table table- spacing-s' style = 'width:auto;'>\n<thead> <tr> <th style='text-align: right;'> cals <\/th> <th style='text-align: right;'> prot <\/th> <th style='text-align: right;'> carbs <\/th> <th style='text-align: right;'> fat <\/th>  <\/tr> <\/thead> <tbody>\n  <tr> <td align=\"right\"> 2000 <\/td> <td align=\"right\"> 150.00 <\/td> <td align=\"right\"> 200.00 <\/td> <td align=\"right\"> 66.67 <\/td> <\/tr>\n   <\/tbody> <\/table>",
-    "table_text": "<table  class = 'table shiny-table table- spacing-s' style = 'width:auto;'>\n<thead> <tr> <th style='text-align: right;'> cals <\/th> <th style='text-align: left;'> prot <\/th> <th style='text-align: left;'> carbs <\/th> <th style='text-align: left;'> fat <\/th>  <\/tr> <\/thead> <tbody>\n  <tr> <td align=\"right\"> 1940.00 <\/td> <td> 250 <\/td> <td> 10 <\/td> <td> 100 <\/td> <\/tr>\n   <\/tbody> <\/table>"
+    "table_text": "<table  class = 'table shiny-table table- spacing-s' style = 'width:auto;'>\n<thead> <tr> <th style='text-align: right;'> cals <\/th> <th style='text-align: left;'> prot <\/th> <th style='text-align: left;'> carbs <\/th> <th style='text-align: left;'> fat <\/th>  <\/tr> <\/thead> <tbody>\n  <tr> <td align=\"right\"> 1985.00 <\/td> <td> 150 <\/td> <td> 200 <\/td> <td> 65 <\/td> <\/tr>\n   <\/tbody> <\/table>"
   },
   "export": {
 
