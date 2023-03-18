@@ -7,6 +7,7 @@ library(scales)
 library(RColorBrewer)
 library(plotly)
 library(shinythemes)
+library(callr)
 
 
 
@@ -14,17 +15,17 @@ library(shinythemes)
 # Copy the report file to a temporary directory before processing it, in
 # case we don't have write permissions to the current working dir (which
 # can happen when deployed).
-tempReport <- file.path(tempdir(), "report.Rmd")
-file.copy("report.Rmd", tempReport, overwrite = TRUE)
+temp_report_path <- tempfile(fileext = ".Rmd")
+file.copy("report.Rmd", temp_report_path, overwrite = TRUE)
 
 # Render report for downloading
-render_report <- function(file, params){
+render_report <- function(input, output, params) {
   # Knit the document, passing in the `params` list, and eval it in a
   # child of the global environment (this isolates the code in the document
   # from the code in this app).
   rmarkdown::render(
-    tempReport, 
-    output_file = file,
+    input,
+    output_file = output,
     params = params,
     envir = new.env(parent = globalenv())
   )
@@ -383,34 +384,34 @@ server <- function(input, output, session) {
   
   # Download report (slider input)
   output$download_sliders <- downloadHandler(
-    filename = function() {
-      "report.html"
-    },
+    filename = "report.html",
     content = function(file) {
       data <- get_data_sliders()
       params <- get_report_params(data)
-      render_report(file, params)
+      callr::r(
+        render_report,
+        list(input = temp_report_path, output = file, params = params)
+      )
     }
   )
   
   # Download report (manual input)
   output$download_manual <- downloadHandler(
-    filename = function() {
-      "report.html"
-    },
+    filename = "report.html",
     content = function(file) {
-      data <- get_data_manual()
+      data <- get_data_sliders()
       params <- get_report_params(data)
-      render_report(file, params)
+      callr::r(
+        render_report,
+        list(input = temp_report_path, output = file, params = params)
+      )
     }
   )
   
   
   # Download dataset
   output$download_dataset <- downloadHandler(
-    filename = function() {
-      "food_data.csv"
-    },
+    filename = "food_data.csv",
     content = function(file) {
       data <- read.csv('https://raw.githubusercontent.com/UBC-MDS/MacroView/main/data/cleaned_dataset.csv') |>
         select(c('Food.name', 'Weight', 'Energy', 'Protein', 'Carbohydrate', 'Total.Fat')) |> 
