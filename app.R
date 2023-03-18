@@ -395,15 +395,15 @@ server <- function(input, output, session) {
                 overwrite = TRUE)
       
       # Set up parameters to pass to Rmd document
-      params <- list(
-        input_foods = 0, # temp
-        totals = 1,      # temp
-        main_plot = 2,   # temp
-        proportions = 3, # temp
-        sub_plot = 4     # temp
-      )
-      # data <- get_data_sliders()
-      # params <- get_report_params(data)
+      # params <- list(
+      #   input_foods = 0, # temp
+      #   totals = 1,      # temp
+      #   main_plot = 2,   # temp
+      #   proportions = 3, # temp
+      #   sub_plot = 4     # temp
+      # )
+      data <- get_data_sliders()
+      params <- get_report_params(data)
       
       # Notification
       id <- showNotification(
@@ -432,15 +432,15 @@ server <- function(input, output, session) {
                 overwrite = TRUE)
       
       # Set up parameters to pass to Rmd document
-      params <- list(
-        input_foods = 0, # temp
-        totals = 1,      # temp
-        main_plot = 2,   # temp
-        proportions = 3, # temp
-        sub_plot = 4     # temp
-      )
-      # data <- get_data_sliders()
-      # params <- get_report_params(data)
+      # params <- list(
+      #   input_foods = 0, # temp
+      #   totals = 1,      # temp
+      #   main_plot = 2,   # temp
+      #   proportions = 3, # temp
+      #   sub_plot = 4     # temp
+      # )
+      data <- get_data_sliders()
+      params <- get_report_params(data)
       
       # Notification
       id <- showNotification(
