@@ -680,8 +680,105 @@ ui <- navbarPage(
     )
   ),
   
-  tabPanel('About', 'A Page to display some other static information'),
-  tabPanel('Data', 'A Page to display some other static information'),
+  tabPanel('About', 
+           h2('Macroview'),
+           'Macroview is an application designed to provide a convenient, premium level 
+           experience for tracking macronutrient intake, while employing transparent, 
+           government approved nutrition data.',
+           h3('Macro Tracking:'),
+           'Tracking macronutrients is an essential component of the flexible dieting 
+           nutrition strategy, a very common approach for both competitive athletes and 
+           individuals with specific health/ physique goals.  As the name implies, flexible 
+           dieting provides more flexibility than a set diet plan, allowing for variation of 
+           food intake while maintain the progress/ performance benefits of structured 
+           dieting by ensuring overall nutrition targets. It is important to note that 
+           flexible dieting is not a replacement healthy eating, and users should still 
+           ensure to hit their nutrient targets with mostly whole, healthy foods. A common 
+           approach is the 80/20 or 90/10 rule, where individuals attempt to have 80-90% of 
+           their nutrients come from healthy, whole sources, with the remainder being free 
+           to come from processed/junk foods',
+           h5(''),
+           'The essence of the strategy is to set specific daily targets for the main three 
+           macronutrients (Protein, Carbohydrates, Fats), but to take a flexible approach 
+           to fulfilling these targets. This accomplishes control of total intake via 
+           implicitly setting a calorie total as a sum of the energy content of macro 
+           goals, allowing for control of body weight changes. But beyond simple calorie 
+           tracking, macro tracking allows for specific optimization of the benefits of 
+           each macronutrient:',
+           h4('Protein:'),
+           'A minimum amount of protein is required for optimal protein synthesis, and 
+           increased protein promotes satiety.',
+           h4('Carbohydrates:'),
+           'Carbohydrates are important for energy and ensuring optimal training performance.
+           Carbohydrates are the main macronutrient manipulated to control total intake.',
+           h4('Fats:'),
+           'A minimum amount of fat is required for proper health/ hormonal function. 
+           Increased fats can also help increase total caloric intake for individuals 
+           who struggle with hitting sufficient calories for their goals. ',
+           h3('Target Setting Guidance:'),
+           'Please note that the developers of Macroview are not doctors or registered 
+           The recommendations below are based on personal anecdotal and coaching experience. 
+           Specifically, developer Samson Bakos is an experienced natural bodybuilder and 
+           certified personal trainer with experience in nutrition coaching for both lifestyle
+           and competitive clients. Please do not attempt drastic diet protocols without 
+           guidance of a professional.',
+           h4('Total Calories:'),
+           'An idea of baseline caloric needs can be obtained from simple calculators, 
+           i.e.: https://www.calculator.net/bmr-calculator.html which give an estimate 
+           based on sex, height, weight and activity level. From this basal metabolic rate,
+           users can choose to maintain, gain or lose weight. A surplus or deficit of ~500 
+           calories will lead to a gain or loss of 1 pound, respectively. So for a user with 
+           a maintenance caloric intake of 2500, they will lose approximately 1 pound a week 
+           eating 2000 calories. Note that basal metabolic rate is roughly distributed on 
+           a bell curve, with some individuals having much higher or much lower needs. The 
+           best way to establish your metabolic rate is to track both intake and weight 
+           trends for several weeks, and calculate your needs from there, but calculators 
+           ive a good place to start. Note as well that it is recommended to not lose or 
+           gain more than 1% of your total body mass per week.',
+           h4('Protein:'),
+           'The RDA requirement (0.8g per kg bodyweight) is generally considered to be 
+           very low for individuals involved in athletics or desiring physique changes. 
+           Macroview developers recommend 1.5g/kg for individuals involved in regular 
+           athletics, to as high as 2.0-2.2g/kg for those involved in intense resistance 
+           training.',
+           h4('Fat and Carbs:'),
+          'Fat and Carbs are generally considered “energy calories” and are used to fill 
+          out the remainder of the desired caloric total. Carbs promote energy and training 
+          performance, and fats promote satiety. Exact balance depends on user food 
+          preferences, but it is not recommended to drop below 0.3g/kg for either 
+          macronutrient.',
+          h3('App Usage:'),
+          'See the ReadMe for detailed example images of usage.',
+          'The left-most panel allows users to set their macronutrient targets, with a 
+          choice between using sliders to set macronutrient percentages (top) or inputting
+          specific values (bottom). Once set, users must click either the “Plot Sliders” or 
+          “Plot Manual Input” to display plots, which appear on the right side. The top plot 
+          displays the set targets and current logged intake in terms of calories. The 
+          bottom plot displays a bar plot of the current macro breakdown of intake as 
+          percentages alongside the desired final breakdown based on set targets.',
+          h5(''),
+          'The middle panel allows for selection of a food from the dataset, along with 
+          a quantity consumed in grams. Once food consumed has been entered, users should 
+          click the desired plotting button (see above) to visualize their intake.'
+           ),
+  tabPanel('Data', 
+           h3('About the Dataset:'),
+           'The dataset for this app is “Nutrient Value of Some Common Foods (NVSCF)”, 
+           provided by Health Canada, available through the open.canada.ca portal: 
+           https://open.canada.ca/data/en/dataset/a289fd54-060c-4a96-9fcf-b1c6e706426f. ',
+           h5(''),
+           'The dataset is designed as a “quick and easy reference to help make informed 
+           food choices through an understanding of the nutrient content of the foods you 
+           eat.”',
+           h5(''),
+           'Note that Macroview does not use all the available columns in the dataset, 
+           as this app is used to track calories and macronutrients, not micronutrients 
+           (vitamins/ minerals) or other values (sugars, cholesterol, saturated fat, etc). 
+           Making healthy choices with respect to specific food selections is left to the 
+           user. More information for foods in the dataset is available in a directly 
+           readable format in the following booklet: 
+           https://open.canada.ca/data/en/dataset/a289fd54-060c-4a96-9fcf-b1c6e706426f/resource/a30e489c-f191-42b5-8f22-1e366e99e7a1'
+           ),
   tabPanel('Download', 'A Page to display some other static information'),
   
   tabPanel(
