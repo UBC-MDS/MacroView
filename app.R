@@ -406,6 +406,27 @@ server <- function(input, output, session) {
   )
   
   
+  # Download dataset
+  output$download_dataset <- downloadHandler(
+    filename = function() {
+      "food_data.csv"
+    },
+    content = function(file) {
+      data <- read.csv('https://raw.githubusercontent.com/UBC-MDS/MacroView/main/data/cleaned_dataset.csv') |>
+        select(c('Food.name', 'Weight', 'Energy', 'Protein', 'Carbohydrate', 'Total.Fat')) |> 
+        rename(
+          food_name = Food.name,
+          weight_grams = Weight,
+          energy_kcal = Energy,
+          protein_grams = Protein,
+          carbohydrate_grams = Carbohydrate,
+          total_fat_grams = Total.Fat
+        ) |> 
+      write.csv(data, file)
+    }
+  )
+  
+  
   
   
   #Statistics/ Ranking Plot Tab
@@ -631,25 +652,25 @@ ui <- navbarPage(
                       ),
                       
                       fluidRow(
-                        h4(""),
+                        h2(""),
                         column(
                           width = 7,
                         )
                       ),
                       fluidRow(
-                        h4(""),
+                        h2(""),
                         column(
                           width = 7,
                         )
                       ),
                       fluidRow(
-                        h4(""),
+                        h2(""),
                         column(
                           width = 7,
                         )
                       ),
                       fluidRow(
-                        h4(""),
+                        h2(""),
                         column(
                           width = 7,
                         )
@@ -791,7 +812,30 @@ ui <- navbarPage(
            readable format in the following booklet: 
            https://open.canada.ca/data/en/dataset/a289fd54-060c-4a96-9fcf-b1c6e706426f/resource/a30e489c-f191-42b5-8f22-1e366e99e7a1'
            ),
-  tabPanel('Download', 'A Page to display some other static information'),
+  tabPanel(
+    'Download',
+    # first navbar page
+    h2("Download the Food Dataset"),
+      mainPanel(
+                       column(
+                         h4("Download Dataset"),
+                         width = 12,
+                         offset = 6,
+                       ),
+                        # Download button
+                       column(
+                         downloadButton("download_dataset"),
+                         width = 5,
+                         offset = 6,
+                       ),
+                       column(
+                         'Note that this data was provided by Health Canada.',
+                         
+                         width = 5,
+                         offset = 6,
+                       )
+                 )
+      ),
   
   tabPanel(
     'Statistics',
