@@ -542,6 +542,18 @@ ui <- navbarPage(
                           width = 7,
                         )
                       ),
+                      fluidRow(
+                        h4(""),
+                        column(
+                          width = 7,
+                        )
+                      ),
+                      fluidRow(
+                        h4(""),
+                        column(
+                          width = 7,
+                        )
+                      ),
                       
                       fluidRow(
                           column(
