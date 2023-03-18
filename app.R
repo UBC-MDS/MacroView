@@ -671,7 +671,7 @@ ui <- navbarPage(
       # mainpanel for plots
       mainPanel(
         width=7,
-        h1("Macroutrient Totals"),
+        h1("Macronutrient Totals"),
         plotOutput("main_plot", width = "1000px"),
         h1("Macronutrient Proportions"),
         plotOutput("sub_plot", width = "1000px")
