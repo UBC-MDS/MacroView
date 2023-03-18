@@ -391,15 +391,15 @@ server <- function(input, output, session) {
   output$download_sliders <- downloadHandler(
     filename = "report.html",
     content = function(file) {
-      # data <- get_data_sliders()
-      # params <- get_report_params(data)
-      params <- list(
-        input_foods = 0, 
-        totals = 0,
-        main_plot = 0,
-        proportions = 0,
-        sub_plot = 0
-      )
+      data <- get_data_sliders()
+      params <- get_report_params(data)
+      # params <- list(
+      #   input_foods = 0, 
+      #   totals = 0,
+      #   main_plot = 0,
+      #   proportions = 0,
+      #   sub_plot = 0
+      # )
       render_report(file = file, params = params)
     }
   )
@@ -408,15 +408,15 @@ server <- function(input, output, session) {
   output$download_manual <- downloadHandler(
     filename = "report.html",
     content = function(file) {
-      # data <- get_data_manual()
-      # params <- get_report_params(data)
-      params <- list(
-        input_foods = 0, 
-        totals = 0,
-        main_plot = 0,
-        proportions = 0,
-        sub_plot = 0
-      )
+      data <- get_data_manual()
+      params <- get_report_params(data)
+      # params <- list(
+      #   input_foods = 0, 
+      #   totals = 0,
+      #   main_plot = 0,
+      #   proportions = 0,
+      #   sub_plot = 0
+      # )
       render_report(file = file, params = params)
     }
   )
