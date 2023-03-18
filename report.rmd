@@ -3,18 +3,20 @@ title: "report"
 author: "Jakob Thoms"
 output: html_document
 params:
-  p1: -999
-  p2: -100
+  input_foods: NA
+  main_plot: NA
+  sub_plot: NA
 ---
 
 
-
-```{r}
-params$p1
+### Foods Input:
+```{r echo=FALSE}
+params$input_foods
 ```
 
 
 
-```{r}
-params$p2
+```{r fig.height=8, fig.width=14, echo=FALSE}
+library(cowplot)
+plot_grid(params$main_plot, params$sub_plot)
 ```

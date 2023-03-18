@@ -55,6 +55,7 @@ server <- function(input, output, session) {
     }
   })
   
+  
   # read data and select relevent columns
   data <- read.csv('https://raw.githubusercontent.com/UBC-MDS/MacroView/main/data/cleaned_dataset.csv') |>
     select(c('Food.name', 'Weight', 'Energy', 'Protein', 'Carbohydrate', 'Total.Fat'))
@@ -72,6 +73,7 @@ server <- function(input, output, session) {
     updateSelectInput(session, inputId='select_food4', label='Select food', choices=food_list, selected='None')
     updateSelectInput(session, inputId='select_food5', label='Select food', choices=food_list, selected='None')
   })
+  
   
   # update total input food energy table to be plotted
   reactive_data <- reactive({
@@ -109,127 +111,76 @@ server <- function(input, output, session) {
   })
   
   
-  #Main Plot
-  #If using Sliders
-  observeEvent(input$selectSliders,{
+  # Slider input
+  get_data_sliders <- function(){
     df <- data.frame(
       nutrients = c("Cals", "Prot", "Carbs", "Fat"),
       values = c(as.numeric(input$calSliders), as.numeric(input$proteinSlider)/100 * as.numeric(input$calSliders),
                  as.numeric(input$carbSlider)/100 * as.numeric(input$calSliders),
                  as.numeric(input$fatSlider)/100 * as.numeric(input$calSliders)))
     
-    # get summay data from food input
     input_foods <- reactive_data()
     df['values_input'] <- input_foods['values']
     
     
-    df <- df |> mutate(nutrients = as_factor(nutrients) |> fct_relevel(c("Fat", "Carbs", "Prot", "Cals")))
+    df <- df |> 
+      mutate(nutrients = as_factor(nutrients) |> fct_relevel(c("Fat", "Carbs", "Prot", "Cals")))
     
     cals_input <- df |> filter(nutrients == "Cals") |> pull(values_input)
     cals_goal <- df |> filter(nutrients == "Cals") |> pull(values)
     
-    # Main plot
-    
-    plot1 <- ggplot(data = df) +
-      geom_point(aes(x = nutrients, y = values), shape = '-', stroke = 15, size = 15) +
-      geom_col(aes(x = nutrients, y = values_input, fill = nutrients), alpha=0.7, colour = "black") +
-      labs(x = "Nutrient", y = "Calories") +
-      ylim(0, max(cals_input, cals_goal)) +
-      theme_bw(base_size = 20) +
-      theme(
-        legend.key.size = unit(1, 'cm'),
-        legend.key.height = unit(1, 'cm'),
-        legend.key.width = unit(1, 'cm'),
-      ) +
-      scale_fill_brewer(palette = 'Dark2')
-    
-    output$main_plot <- renderPlot(plot1)
-    
-    
-    # Calculate proportions
-    prop_df <- df |> filter(nutrients != "Cals")
-    prop_df['goal'] <- prop_df['values'] / sum(prop_df['values'])
-    prop_df['input'] <- prop_df['values_input'] / sum(prop_df['values_input'])
-    prop_df <- prop_df |>
-      select(c('nutrients', 'goal', 'input')) |>
-      pivot_longer(2:3, names_to = 'field', values_to = 'prop') |>
-      mutate(nutrients = fct_rev(nutrients))
-    
-    cals_df <- data.frame(
-      field = c('goal', 'input'),
-      cals = c(cals_goal, cals_input),
-      prop = c(1.17, 1.17),
-      nutrients = c('Carbs', 'Carbs')
-    )
-    
-    
-    # Sub plot
-    subplot1 <- ggplot(prop_df) +
-      aes(
-        y = field,
-        x = prop,
-        fill = nutrients
-      ) +
-      geom_bar(
-        stat = "identity",
-        colour = 'black',
-        alpha = 0.7
-      ) +
-      geom_text(
-        aes(label = ifelse(prop >= 0.05, paste0(sprintf("%.0f", prop*100),"%"),"")),
-        position = position_stack(vjust = 0.5),
-        colour = "black",
-        fontface = "bold",
-        size = 6
-      ) +
-      scale_x_continuous(breaks = c(0, .25, .5, .75, 1), labels = percent_format()) +
-      labs(
-        y = "",
-        x = "",
-        fill = ""
-      ) +
-      theme_bw(base_size = 20) +
-      theme(
-        legend.key.size = unit(1, 'cm'),
-        legend.key.height = unit(1, 'cm'),
-        legend.key.width = unit(1, 'cm'),
-      ) +
-      scale_fill_manual(values = rev(brewer.pal(n=3, "Dark2"))) +
-      geom_text(
-        aes(label = paste(round(cals, 0), "\ncalories")),
-        data = cals_df,
-        size = 6,
-        hjust = 0.75,
-        colour = brewer.pal(n=4, "Dark2")[4],
-        fontface = "bold"
-      ) +
-      guides(fill = guide_legend(reverse = TRUE))
-    
-    
-    
-    output$sub_plot <- renderPlot(subplot1)
-  })
+    list(df = df, cals_input = cals_input, cals_goal = cals_goal)
+  }
   
-  #If using Manual
-  observeEvent(input$selectText,{
+  
+  # Manual input
+  get_data_manual <- function(){
     cals <- as.numeric(input$proteinText)*4 + as.numeric(input$carbText)*4 + as.numeric(input$fatText)*9
     df <- data.frame(
       nutrients = c("Cals", "Prot", "Carbs", "Fat"),
       values = c(cals, as.numeric(input$proteinText)*4,
                  as.numeric(input$carbText)*4, as.numeric(input$fatText)*9))
     
-    # get summay data from food input
+    # get summary data from food input
     input_foods <- reactive_data()
     df['values_input'] <- input_foods['values']
     
-    df <- df |> mutate(nutrients = as_factor(nutrients) |> fct_relevel(c("Fat", "Carbs", "Prot", "Cals")))
+    df <- df |>
+      mutate(nutrients = as_factor(nutrients) |> fct_relevel(c("Fat", "Carbs", "Prot", "Cals")))
+    
     
     cals_input <- df |> filter(nutrients == "Cals") |> pull(values_input)
     cals_goal <- df |> filter(nutrients == "Cals") |> pull(values)
+
+        
+    list(df = df, cals_input = cals_input, cals_goal = cals_goal)
+  }
+  
+  
+  
+  # Calculate proportions for the subplot
+  calc_proportions <- function(df){
+    prop_df <- df |> filter(nutrients != "Cals")
+    prop_df['goal'] <- prop_df['values'] / sum(prop_df['values'])
+    prop_df['input'] <- prop_df['values_input'] / sum(prop_df['values_input'])
+    prop_df <- prop_df |>
+      select(c('nutrients', 'goal', 'input')) |>
+      pivot_longer(2:3, names_to = 'field', values_to = 'prop') |>
+      mutate(nutrients = fct_rev(nutrients))
     
+  
+    prop_df
+  }
+  
+  
+  
+  # Main plot
+  main_plot <- function(data){
+    df <- data$df
+    cals_input <- df |> filter(nutrients == "Cals") |> pull(values_input)
+    cals_goal <- df |> filter(nutrients == "Cals") |> pull(values)
     
-    # Main plot
-    plot2 <- ggplot(data = df) +
+    plot <- ggplot(data = df) +
       geom_point(aes(x = nutrients, y = values), shape = '-', stroke = 15, size = 15) +
       geom_col(aes(x = nutrients, y = values_input, fill = nutrients), alpha=0.7, colour = "black") +
       labs(x = "Nutrient", y = "Calories") +
@@ -242,17 +193,18 @@ server <- function(input, output, session) {
       ) +
       scale_fill_brewer(palette = 'Dark2')
     
-    output$main_plot <- renderPlot(plot2)
+    plot
+  }
+  
+  
+  
+  # Sub plot
+  sub_plot <- function(data){
+    df <- data$df
+    cals_input <- df |> filter(nutrients == "Cals") |> pull(values_input)
+    cals_goal <- df |> filter(nutrients == "Cals") |> pull(values)
     
-    
-    # Calculate proportions
-    prop_df <- df |> filter(nutrients != "Cals")
-    prop_df['goal'] <- prop_df['values'] / sum(prop_df['values'])
-    prop_df['input'] <- prop_df['values_input'] / sum(prop_df['values_input'])
-    prop_df <- prop_df |>
-      select(c('nutrients', 'goal', 'input')) |>
-      pivot_longer(2:3, names_to = 'field', values_to = 'prop') |>
-      mutate(nutrients = fct_rev(nutrients))
+    prop_df <- calc_proportions(df)
     
     cals_df <- data.frame(
       field = c('goal', 'input'),
@@ -261,9 +213,7 @@ server <- function(input, output, session) {
       nutrients = c('Carbs', 'Carbs')
     )
     
-    
-    # Sub plot
-    subplot2 <- ggplot(prop_df) +
+    subplot <- ggplot(prop_df) +
       aes(
         y = field,
         x = prop,
@@ -305,27 +255,93 @@ server <- function(input, output, session) {
       guides(fill = guide_legend(reverse = TRUE))
     
     
+    subplot
+  }
+  
+  
+  get_input_foods <- function(){
+    input_foods_list <- c(
+      input$select_food1,
+      input$select_food2,
+      input$select_food3,
+      input$select_food4,
+      input$select_food5
+      ) # This is super good coding btw
     
+    foods <- data |>
+      filter(Food.name %in% input_foods_list) |> 
+      filter(Food.name != 'None') |> 
+      select(Food.name, Weight) |> 
+      rename(Weight_grams = Weight)
+      
+    
+    foods
+  }
+  
+  
+  
+
+  
+  #If using Sliders
+  observeEvent(input$selectSliders,{
+    data <- get_data_sliders() 
+    
+    # Main plot
+    plot1 <- main_plot(data)
+    output$main_plot <- renderPlot(plot1)
+    
+    # Sub plot
+    subplot1 <- sub_plot(data)
+    output$sub_plot <- renderPlot(subplot1)
+  })
+  
+  #If using Manual
+  observeEvent(input$selectText,{
+    data <- get_data_manual()
+    
+    # Main plot
+    plot2 <- main_plot(data)
+    output$main_plot <- renderPlot(plot2)
+    
+    
+    # Sub plot
+    subplot2 <- sub_plot(data)
     output$sub_plot <- renderPlot(subplot2)
-    
   })
   
   
+  
+  
   # Download report
- 
   output$download_main <- downloadHandler(
     filename = function() {
       "report.html"
     },
     content = function(file) {
+      
       # Copy the report file to a temporary directory before processing it, in
       # case we don't have write permissions to the current working dir (which
       # can happen when deployed).
       tempReport <- file.path(tempdir(), "report.Rmd")
       file.copy("report.Rmd", tempReport, overwrite = TRUE)
       
+      # Create plots and dataframes
+      # --
+      input_foods_df <- get_input_foods()
+      
+      data <- get_data_sliders() 
+      
+      main_plot <- main_plot(data)
+
+      sub_plot <- sub_plot(data)
+      # --
+     
       # Set up parameters to pass to Rmd document
-      params <- list(p1 = 1, p2 = 2)
+      params <- list(
+        input_foods = input_foods_df, 
+        main_plot = main_plot,
+        sub_plot = sub_plot
+      )
       
       # Knit the document, passing in the `params` list, and eval it in a
       # child of the global environment (this isolates the code in the document
