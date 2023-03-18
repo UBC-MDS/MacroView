@@ -311,6 +311,34 @@ server <- function(input, output, session) {
   })
   
   
+  # Download report
+ 
+  output$download_main <- downloadHandler(
+    filename = function() {
+      "report.html"
+    },
+    content = function(file) {
+      # Copy the report file to a temporary directory before processing it, in
+      # case we don't have write permissions to the current working dir (which
+      # can happen when deployed).
+      tempReport <- file.path(tempdir(), "report.Rmd")
+      file.copy("report.Rmd", tempReport, overwrite = TRUE)
+      
+      # Set up parameters to pass to Rmd document
+      params <- list(p1 = 1, p2 = 2)
+      
+      # Knit the document, passing in the `params` list, and eval it in a
+      # child of the global environment (this isolates the code in the document
+      # from the code in this app).
+      rmarkdown::render(
+        tempReport, 
+        output_file = file,
+        params = params,
+        envir = new.env(parent = globalenv())
+      )
+    }
+  )
+  
   
   
   
@@ -555,10 +583,12 @@ ui <- navbarPage(
                         )
                       ),
                       
+                      
+                      # Download report button
                       fluidRow(
                           column(
                             h4("Download Report"),
-                            downloadButton("download1"),
+                            downloadButton("download_main"),
                             width = 5,
                             offset = 4,
                           )

@@ -1,0 +1,20 @@
+---
+title: "report"
+author: "Jakob Thoms"
+output: html_document
+params:
+  p1: -999
+  p2: -100
+---
+
+
+
+```{r}
+params$p1
+```
+
+
+
+```{r}
+params$p2
+```
