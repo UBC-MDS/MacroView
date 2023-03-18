@@ -1,22 +1,30 @@
 ---
-title: "report"
-author: "Jakob Thoms"
+title: "MacroView"
 output: html_document
 params:
   input_foods: NA
+  totals: NA
   main_plot: NA
+  proportions: NA
   sub_plot: NA
 ---
 
 
-### Foods Input:
+## Foods Input:
 ```{r echo=FALSE}
-params$input_foods
+params$input_foods |> knitr::kable(digits=2)
 ```
 
 
+## Macroutrient Totals:
+```{r fig.height=4, fig.width=12, echo=FALSE}
+params$totals |> knitr::kable(digits=2)
+params$main_plot
+```
 
-```{r fig.height=8, fig.width=14, echo=FALSE}
-library(cowplot)
-plot_grid(params$main_plot, params$sub_plot)
+
+## Macroutrient Proportions:
+```{r fig.height=3, fig.width=12, echo=FALSE}
+params$proportions |> knitr::kable(digits=3)
+params$sub_plot
 ```

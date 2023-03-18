@@ -267,14 +267,16 @@ server <- function(input, output, session) {
       input$select_food4,
       input$select_food5
       ) # This is super good coding btw
+    input_grams_list <- c(
+      input$g1, input$g2, input$g3, input$g4, input$g5
+    )
     
-    foods <- data |>
-      filter(Food.name %in% input_foods_list) |> 
-      filter(Food.name != 'None') |> 
-      select(Food.name, Weight) |> 
-      rename(Weight_grams = Weight)
+    foods <- data.frame(
+        food_name = input_foods_list,
+        weight_grams = input_grams_list
+        ) |> 
+      filter(food_name != 'None')
       
-    
     foods
   }
   
@@ -325,21 +327,42 @@ server <- function(input, output, session) {
       tempReport <- file.path(tempdir(), "report.Rmd")
       file.copy("report.Rmd", tempReport, overwrite = TRUE)
       
-      # Create plots and dataframes
+      # Run the analysis
       # --
       input_foods_df <- get_input_foods()
       
-      data <- get_data_sliders() 
+      data <- get_data_sliders()
+      
+      totals_df <- data$df |> 
+        rename(
+          nutrient = nutrients,
+          goal_calories = values,
+          input_calories = values_input
+        )
       
       main_plot <- main_plot(data)
+      
+      proportions_df <- calc_proportions(data$df) |> 
+        pivot_wider(names_from = field, values_from = prop) |> 
+        rename(
+          nutrient = nutrients,
+          goal_proportion = goal,
+          input_proportion = input
+        )
 
+      cals_prop <- data.frame(nutrient = c('Cals'), goal_proportion = c(1), input_proportion=c(1))
+      
+      proportions_df <- rbind(cals_prop, proportions_df)
+      
       sub_plot <- sub_plot(data)
       # --
      
       # Set up parameters to pass to Rmd document
       params <- list(
         input_foods = input_foods_df, 
+        totals = totals_df,
         main_plot = main_plot,
+        proportions = proportions_df,
         sub_plot = sub_plot
       )
       
@@ -386,12 +409,11 @@ server <- function(input, output, session) {
 ui <- navbarPage(
   theme = shinytheme("spacelab"),
   'MacroView',
-  # App title goes here!
   # dashboard tab
   tabPanel(
     'Dashboard',
     # first navbar page
-    h1('Macroview Main Dashboard'),
+    h1('MacroView Main Dashboard'),
     sidebarLayout(
       # sidebar panel for inputs
       sidebarPanel(
