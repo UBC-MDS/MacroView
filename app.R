@@ -757,7 +757,9 @@ ui <- navbarPage(
            guidance of a professional.',
            h4('Total Calories:'),
            'An idea of baseline caloric needs can be obtained from simple calculators, 
-           i.e.: https://www.calculator.net/bmr-calculator.html which give an estimate 
+           i.e.:',
+           tags$a(href='https://www.calculator.net/bmr-calculator.html', 'this tool here'),
+           'which give an estimate 
            based on sex, height, weight and activity level. From this basal metabolic rate,
            users can choose to maintain, gain or lose weight. A surplus or deficit of ~500 
            calories will lead to a gain or loss of 1 pound, respectively. So for a user with 
@@ -797,8 +799,8 @@ ui <- navbarPage(
   tabPanel('Data', 
            h3('About the Dataset:'),
            'The dataset for this app is “Nutrient Value of Some Common Foods (NVSCF)”, 
-           provided by Health Canada, available through the open.canada.ca portal: 
-           https://open.canada.ca/data/en/dataset/a289fd54-060c-4a96-9fcf-b1c6e706426f. ',
+           provided by Health Canada, available through the open.canada.ca portal: ',
+           tags$a(href='https://open.canada.ca/data/en/dataset/a289fd54-060c-4a96-9fcf-b1c6e706426f.', "here"),
            h5(''),
            'The dataset is designed as a “quick and easy reference to help make informed 
            food choices through an understanding of the nutrient content of the foods you 
@@ -809,8 +811,8 @@ ui <- navbarPage(
            (vitamins/ minerals) or other values (sugars, cholesterol, saturated fat, etc). 
            Making healthy choices with respect to specific food selections is left to the 
            user. More information for foods in the dataset is available in a directly 
-           readable format in the following booklet: 
-           https://open.canada.ca/data/en/dataset/a289fd54-060c-4a96-9fcf-b1c6e706426f/resource/a30e489c-f191-42b5-8f22-1e366e99e7a1'
+           readable format in the following booklet: ',
+           tags$a(href='https://open.canada.ca/data/en/dataset/a289fd54-060c-4a96-9fcf-b1c6e706426f/resource/a30e489c-f191-42b5-8f22-1e366e99e7a1', 'here')
            ),
   tabPanel(
     'Download',

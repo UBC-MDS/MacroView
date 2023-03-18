@@ -13,7 +13,7 @@ Available at: https://macroview.shinyapps.io/MacroView/
 
 ## Overview
 
-This repository contains the MacroView dashboard project. The project aims to create an application that allows potential users track their daily calorie/ macronutrient intake by using the `Nutrient Value of Some Common Foods` dataset (accessed [here](https://open.canada.ca/data/en/dataset/a289fd54-060c-4a96-9fcf-b1c6e706426f).
+This repository contains the MacroView dashboard project. The project aims to create an application that allows potential users track their daily calorie/ macronutrient intake by using the `Nutrient Value of Some Common Foods` dataset accessed [here](https://open.canada.ca/data/en/dataset/a289fd54-060c-4a96-9fcf-b1c6e706426f).
 
 
 ## Who are we and who should use this dashboard?
@@ -24,7 +24,9 @@ This dashboard is essentially a nutrition tracking dashboard that enables health
 
 ## Dashboard Functionality
 
-The dashboard will have four tabs, `Main Dashboard`, `About`, `Data`, `Download`, and `Statistics`, with the `Main Dashboard` tab containing the main app funcionality. The live app can be accessed [here](https://macroview.shinyapps.io/MacroView-v1/).
+The dashboard will have four tabs, `Main Dashboard`, `About`, `Data`, `Download`, and `Statistics`, with the `Main Dashboard` tab containing the main app funcionality. The `About` tab contains user information and app usage. The `Data` tab conatins explanations and links to the dataset used in the app. The `Download` tab allows the user to download the cleaned and merged dataset used in the app. Finally, the `Statistics` tab will show the user top foods containing the most per gram concentration of the selected nutrition components. The live app can be accessed [here](https://macroview.shinyapps.io/MacroView-v1/).
+
+### Main Dashboard
 
 The `Main Dashboard` layout will have user input on the left and visualizations on the right.
 ![](img/dashboard.png)
@@ -38,6 +40,11 @@ Once targets and food items are populated, two graphics will be displayed to vis
 
 The bottom figure will plot the specific caloric intake and targets as a stacked bar plot showing the proportional breakdown of user inputs.
 ![](img/proportions.png)
+
+### Statistics
+
+The `Statistics` layout will feature a user input panel for the user to select nutrition components for ranking, and a plot showing the top food items in the selected category.
+![](img/statistics.png)
 
 ## Continuous Development
 
