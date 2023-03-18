@@ -892,23 +892,26 @@ ui <- navbarPage(
     # first navbar page
     h2("Download the Food Dataset"),
       mainPanel(
+                  fluidRow(
                        column(
+                         "",
+                         "",
                          h4("Download Dataset"),
+                         "",
                          width = 12,
-                         offset = 6,
-                       ),
+                         offset = 0.2,
+                       ),),
                         # Download button
-                       column(
+                       fluidRow(column(
                          downloadButton("download_dataset"),
-                         width = 5,
-                         offset = 6,
-                       ),
-                       column(
-                         'Note that this data was provided by Health Canada.',
-                         
-                         width = 5,
-                         offset = 6,
-                       )
+                         width = 10,
+                         offset = 0.2,
+                       ),),
+                       fluidRow(column(
+                         'Please note that this data was provided by Health Canada.',
+                         width = 10,
+                         offset = 0.2,
+                       ),),
                  )
       ),
   
