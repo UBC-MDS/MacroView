@@ -1,0 +1,33 @@
+{
+  "input": {
+    "calSliders": 2000,
+    "carbSlider": 40,
+    "carbText": "27",
+    "fatSlider": 30,
+    "fatText": "101.5",
+    "g1": 500,
+    "g2": 400,
+    "g3": 200,
+    "g4": 0,
+    "g5": 0,
+    "primarycomponent": "Energy",
+    "proteinSlider": 30,
+    "proteinText": "99",
+    "secondarycomponent": "Energy",
+    "selectSliders": 0,
+    "selectText": 0,
+    "select_food1": "Chicken, ground, lean, cooked",
+    "select_food2": "Rice, brown, long-grain, cooked",
+    "select_food3": "Banana",
+    "select_food4": "None",
+    "select_food5": "None",
+    "topK": 10
+  },
+  "output": {
+    "table_sliders": "<table  class = 'table shiny-table table- spacing-s' style = 'width:auto;'>\n<thead> <tr> <th style='text-align: right;'> cals <\/th> <th style='text-align: right;'> prot <\/th> <th style='text-align: right;'> carbs <\/th> <th style='text-align: right;'> fat <\/th>  <\/tr> <\/thead> <tbody>\n  <tr> <td align=\"right\"> 2000 <\/td> <td align=\"right\"> 150.00 <\/td> <td align=\"right\"> 200.00 <\/td> <td align=\"right\"> 66.67 <\/td> <\/tr>\n   <\/tbody> <\/table>",
+    "table_text": "<table  class = 'table shiny-table table- spacing-s' style = 'width:auto;'>\n<thead> <tr> <th style='text-align: right;'> cals <\/th> <th style='text-align: left;'> prot <\/th> <th style='text-align: left;'> carbs <\/th> <th style='text-align: left;'> fat <\/th>  <\/tr> <\/thead> <tbody>\n  <tr> <td align=\"right\"> 1417.50 <\/td> <td> 99 <\/td> <td> 27 <\/td> <td> 101.5 <\/td> <\/tr>\n   <\/tbody> <\/table>"
+  },
+  "export": {
+
+  }
+}
