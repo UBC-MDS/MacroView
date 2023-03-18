@@ -7,7 +7,6 @@ library(scales)
 library(RColorBrewer)
 library(plotly)
 library(shinythemes)
-library(callr)
 
 
 
@@ -19,12 +18,12 @@ temp_report_path <- tempfile(fileext = ".Rmd")
 file.copy("report.Rmd", temp_report_path, overwrite = TRUE)
 
 # Render report for downloading
-render_report <- function(input, output, params) {
+render_report <- function(output, params) {
   # Knit the document, passing in the `params` list, and eval it in a
   # child of the global environment (this isolates the code in the document
   # from the code in this app).
   rmarkdown::render(
-    input,
+    temp_report_path,
     output_file = output,
     params = params,
     envir = new.env(parent = globalenv())
@@ -388,10 +387,7 @@ server <- function(input, output, session) {
     content = function(file) {
       data <- get_data_sliders()
       params <- get_report_params(data)
-      callr::r(
-        render_report,
-        list(input = temp_report_path, output = file, params = params)
-      )
+      render_report(output = file, params = params)
     }
   )
   
@@ -401,10 +397,8 @@ server <- function(input, output, session) {
     content = function(file) {
       data <- get_data_sliders()
       params <- get_report_params(data)
-      callr::r(
-        render_report,
-        list(input = temp_report_path, output = file, params = params)
-      )
+      render_report(output = file, params = params)
+      
     }
   )
   
