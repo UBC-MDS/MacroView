@@ -19,13 +19,13 @@ temp_report_path <- tempfile(fileext = ".Rmd")
 file.copy("report.Rmd", temp_report_path, overwrite = TRUE)
 
 # Render report for downloading
-render_report <- function(output, params) {
+render_report <- function(file, params) {
   # Knit the document, passing in the `params` list, and eval it in a
   # child of the global environment (this isolates the code in the document
   # from the code in this app).
   rmarkdown::render(
     temp_report_path,
-    output_file = output,
+    output_file = file,
     params = params,
     envir = new.env(parent = globalenv())
   )
@@ -381,14 +381,26 @@ server <- function(input, output, session) {
     params
   }
   
+
+  
+  
+  
+  #---Downloads---
   
   # Download report (slider input)
   output$download_sliders <- downloadHandler(
     filename = "report.html",
     content = function(file) {
-      data <- get_data_sliders()
-      params <- get_report_params(data)
-      render_report(output = file, params = params)
+      # data <- get_data_sliders()
+      # params <- get_report_params(data)
+      params <- list(
+        input_foods = 0, 
+        totals = 0,
+        main_plot = 0,
+        proportions = 0,
+        sub_plot = 0
+      )
+      render_report(file = file, params = params)
     }
   )
   
@@ -396,10 +408,16 @@ server <- function(input, output, session) {
   output$download_manual <- downloadHandler(
     filename = "report.html",
     content = function(file) {
-      data <- get_data_sliders()
-      params <- get_report_params(data)
-      render_report(output = file, params = params)
-      
+      # data <- get_data_manual()
+      # params <- get_report_params(data)
+      params <- list(
+        input_foods = 0, 
+        totals = 0,
+        main_plot = 0,
+        proportions = 0,
+        sub_plot = 0
+      )
+      render_report(file = file, params = params)
     }
   )
   
@@ -421,6 +439,9 @@ server <- function(input, output, session) {
       write.csv(data, file)
     }
   )
+  
+  
+  
   
   
   
