@@ -313,68 +313,84 @@ server <- function(input, output, session) {
   
   
   
+  # Render report for downloading
+  render_report <- function(file, data){
+    
+    
+    # Copy the report file to a temporary directory before processing it, in
+    # case we don't have write permissions to the current working dir (which
+    # can happen when deployed).
+    tempReport <- file.path(tempdir(), "report.Rmd")
+    file.copy("report.Rmd", tempReport, overwrite = TRUE)
+    
+    # Run the analysis
+    # --
+    input_foods_df <- get_input_foods()
+    
+    totals_df <- data$df |> 
+      rename(
+        nutrient = nutrients,
+        goal_calories = values,
+        input_calories = values_input
+      )
+    
+    main_plot <- main_plot(data)
+    
+    proportions_df <- calc_proportions(data$df) |> 
+      pivot_wider(names_from = field, values_from = prop) |> 
+      rename(
+        nutrient = nutrients,
+        goal_proportion = goal,
+        input_proportion = input
+      )
+    
+    cals_prop <- data.frame(nutrient = c('Cals'), goal_proportion = c(1), input_proportion=c(1))
+    
+    proportions_df <- rbind(cals_prop, proportions_df)
+    
+    sub_plot <- sub_plot(data)
+    # --
+    
+    # Set up parameters to pass to Rmd document
+    params <- list(
+      input_foods = input_foods_df, 
+      totals = totals_df,
+      main_plot = main_plot,
+      proportions = proportions_df,
+      sub_plot = sub_plot
+    )
+    
+    # Knit the document, passing in the `params` list, and eval it in a
+    # child of the global environment (this isolates the code in the document
+    # from the code in this app).
+    rmarkdown::render(
+      tempReport, 
+      output_file = file,
+      params = params,
+      envir = new.env(parent = globalenv())
+    )
+  }
   
-  # Download report
-  output$download_main <- downloadHandler(
+  
+  # Download report (slider input)
+  output$download_sliders <- downloadHandler(
     filename = function() {
       "report.html"
     },
     content = function(file) {
-      
-      # Copy the report file to a temporary directory before processing it, in
-      # case we don't have write permissions to the current working dir (which
-      # can happen when deployed).
-      tempReport <- file.path(tempdir(), "report.Rmd")
-      file.copy("report.Rmd", tempReport, overwrite = TRUE)
-      
-      # Run the analysis
-      # --
-      input_foods_df <- get_input_foods()
-      
       data <- get_data_sliders()
-      
-      totals_df <- data$df |> 
-        rename(
-          nutrient = nutrients,
-          goal_calories = values,
-          input_calories = values_input
-        )
-      
-      main_plot <- main_plot(data)
-      
-      proportions_df <- calc_proportions(data$df) |> 
-        pivot_wider(names_from = field, values_from = prop) |> 
-        rename(
-          nutrient = nutrients,
-          goal_proportion = goal,
-          input_proportion = input
-        )
-
-      cals_prop <- data.frame(nutrient = c('Cals'), goal_proportion = c(1), input_proportion=c(1))
-      
-      proportions_df <- rbind(cals_prop, proportions_df)
-      
-      sub_plot <- sub_plot(data)
-      # --
-     
-      # Set up parameters to pass to Rmd document
-      params <- list(
-        input_foods = input_foods_df, 
-        totals = totals_df,
-        main_plot = main_plot,
-        proportions = proportions_df,
-        sub_plot = sub_plot
-      )
-      
-      # Knit the document, passing in the `params` list, and eval it in a
-      # child of the global environment (this isolates the code in the document
-      # from the code in this app).
-      rmarkdown::render(
-        tempReport, 
-        output_file = file,
-        params = params,
-        envir = new.env(parent = globalenv())
-      )
+      render_report(file, data)
+    }
+  )
+  
+  # Download report (manual input)
+  output$download_manual <- downloadHandler(
+    filename = function() {
+      "report.html"
+    },
+    content = function(file) {
+      data <- get_data_manual()
+      render_report(file, data)
     }
   )
   
@@ -620,16 +636,33 @@ ui <- navbarPage(
                           width = 7,
                         )
                       ),
+                      fluidRow(
+                        h4(""),
+                        column(
+                          width = 7,
+                        )
+                      ),
                       
                       
                       # Download report button
                       fluidRow(
                           column(
                             h4("Download Report"),
-                            downloadButton("download_main"),
                             width = 5,
                             offset = 4,
-                          )
+                          ),
+                          column(
+                            h5("Slider Input"),
+                            downloadButton("download_sliders"),
+                            width = 5,
+                            offset = 4,
+                          ), 
+                          column(
+                            h5("Manual Input"),
+                            downloadButton("download_manual"),
+                            width = 5,
+                            offset = 4,
+                          ),
                     )
                 )
           )
