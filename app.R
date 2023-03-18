@@ -12,26 +12,6 @@ library(rmarkdown)
 
 
 
-# Copy the report file to a temporary directory before processing it, in
-# case we don't have write permissions to the current working dir (which
-# can happen when deployed).
-temp_report_path <- tempfile(fileext = ".Rmd")
-file.copy("report.Rmd", temp_report_path, overwrite = TRUE)
-
-# Render report for downloading
-render_report <- function(file, params) {
-  # Knit the document, passing in the `params` list, and eval it in a
-  # child of the global environment (this isolates the code in the document
-  # from the code in this app).
-  rmarkdown::render(
-    temp_report_path,
-    output_file = file,
-    params = params,
-    envir = new.env(parent = globalenv())
-  )
-}
-
-
 # Server
 server <- function(input, output, session) {
   
@@ -381,45 +361,119 @@ server <- function(input, output, session) {
     params
   }
   
-
+  
   
   
   
   #---Downloads---
   
   # Download report (slider input)
+  # output$download_sliders <- downloadHandler(
+  #   filename = "report.html",
+  #   content = function(file) {
+  #     data <- get_data_sliders()
+  #     params <- get_report_params(data)
+  #     # params <- list(
+  #     #   input_foods = 0, 
+  #     #   totals = 0,
+  #     #   main_plot = 0,
+  #     #   proportions = 0,
+  #     #   sub_plot = 0
+  #     # )
+  #     render_report(file = file, params = params)
+  #   }
+  # )
+  
   output$download_sliders <- downloadHandler(
     filename = "report.html",
     content = function(file) {
-      data <- get_data_sliders()
-      params <- get_report_params(data)
-      # params <- list(
-      #   input_foods = 0, 
-      #   totals = 0,
-      #   main_plot = 0,
-      #   proportions = 0,
-      #   sub_plot = 0
-      # )
-      render_report(file = file, params = params)
+      # Copy the report file to a temporary directory before processing it
+      tempReport <- file.path(tempdir(), 
+                              'report.Rmd')
+      file.copy(from = 'report.Rmd',
+                to = tempReport, 
+                overwrite = TRUE)
+      
+      # Set up parameters to pass to Rmd document
+      params <- list(
+        input_foods = 0, # temp
+        totals = 1,      # temp
+        main_plot = 2,   # temp
+        proportions = 3, # temp
+        sub_plot = 4     # temp
+      )
+      # data <- get_data_sliders()
+      # params <- get_report_params(data)
+      
+      # Notification
+      id <- showNotification(
+        "Rendering report...", 
+        duration = NULL, 
+        closeButton = FALSE
+      )
+      on.exit(removeNotification(id))
+      
+      rmarkdown::render(tempReport, 
+                        output_file = file,
+                        params = params,
+                        envir = new.env(parent = globalenv())
+      )
     }
   )
   
-  # Download report (manual input)
   output$download_manual <- downloadHandler(
     filename = "report.html",
     content = function(file) {
-      data <- get_data_manual()
-      params <- get_report_params(data)
-      # params <- list(
-      #   input_foods = 0, 
-      #   totals = 0,
-      #   main_plot = 0,
-      #   proportions = 0,
-      #   sub_plot = 0
-      # )
-      render_report(file = file, params = params)
+      # Copy the report file to a temporary directory before processing it
+      tempReport <- file.path(tempdir(), 
+                              'report.Rmd')
+      file.copy(from = 'report.Rmd',
+                to = tempReport, 
+                overwrite = TRUE)
+      
+      # Set up parameters to pass to Rmd document
+      params <- list(
+        input_foods = 0, # temp
+        totals = 1,      # temp
+        main_plot = 2,   # temp
+        proportions = 3, # temp
+        sub_plot = 4     # temp
+      )
+      # data <- get_data_sliders()
+      # params <- get_report_params(data)
+      
+      # Notification
+      id <- showNotification(
+        "Rendering report...", 
+        duration = NULL, 
+        closeButton = FALSE
+      )
+      on.exit(removeNotification(id))
+      
+      rmarkdown::render(tempReport, 
+                        output_file = file,
+                        params = params,
+                        envir = new.env(parent = globalenv())
+      )
     }
   )
+  
+  # # Download report (manual input)
+  # output$download_manual <- downloadHandler(
+  #   filename = "report.html",
+  #   content = function(file) {
+  #     data <- get_data_manual()
+  #     params <- get_report_params(data)
+  #     # params <- list(
+  #     #   input_foods = 0, 
+  #     #   totals = 0,
+  #     #   main_plot = 0,
+  #     #   proportions = 0,
+  #     #   sub_plot = 0
+  #     # )
+  #     render_report(file = file, params = params)
+  #   }
+  # )
   
   
   # Download dataset
@@ -463,6 +517,8 @@ server <- function(input, output, session) {
     
   })
 }
+
+
 
 
 
