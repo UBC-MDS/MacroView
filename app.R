@@ -779,8 +779,6 @@ ui <- navbarPage(
            readable format in the following booklet: 
            https://open.canada.ca/data/en/dataset/a289fd54-060c-4a96-9fcf-b1c6e706426f/resource/a30e489c-f191-42b5-8f22-1e366e99e7a1'
            ),
-  tabPanel('Download', 'A Page to display some other static information'),
-  
   tabPanel(
     'Statistics',
     titlePanel("Get the Nutrition Rank!"),
