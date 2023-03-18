@@ -9,6 +9,28 @@ library(plotly)
 library(shinythemes)
 
 
+
+
+# Copy the report file to a temporary directory before processing it, in
+# case we don't have write permissions to the current working dir (which
+# can happen when deployed).
+tempReport <- file.path(tempdir(), "report.Rmd")
+file.copy("report.Rmd", tempReport, overwrite = TRUE)
+
+# Render report for downloading
+render_report <- function(file, params){
+  # Knit the document, passing in the `params` list, and eval it in a
+  # child of the global environment (this isolates the code in the document
+  # from the code in this app).
+  rmarkdown::render(
+    tempReport, 
+    output_file = file,
+    params = params,
+    envir = new.env(parent = globalenv())
+  )
+}
+
+
 # Server
 server <- function(input, output, session) {
   
@@ -151,8 +173,8 @@ server <- function(input, output, session) {
     
     cals_input <- df |> filter(nutrients == "Cals") |> pull(values_input)
     cals_goal <- df |> filter(nutrients == "Cals") |> pull(values)
-
-        
+    
+    
     list(df = df, cals_input = cals_input, cals_goal = cals_goal)
   }
   
@@ -168,7 +190,7 @@ server <- function(input, output, session) {
       pivot_longer(2:3, names_to = 'field', values_to = 'prop') |>
       mutate(nutrients = fct_rev(nutrients))
     
-  
+    
     prop_df
   }
   
@@ -266,23 +288,24 @@ server <- function(input, output, session) {
       input$select_food3,
       input$select_food4,
       input$select_food5
-      ) # This is super good coding btw
+    ) # This is super good coding btw
     input_grams_list <- c(
       input$g1, input$g2, input$g3, input$g4, input$g5
     )
     
     foods <- data.frame(
-        food_name = input_foods_list,
-        weight_grams = input_grams_list
-        ) |> 
+      food_name = input_foods_list,
+      weight_grams = input_grams_list
+    ) |> 
       filter(food_name != 'None')
-      
+    
     foods
   }
   
   
   
-
+  
+  
   
   #If using Sliders
   observeEvent(input$selectSliders,{
@@ -296,6 +319,7 @@ server <- function(input, output, session) {
     subplot1 <- sub_plot(data)
     output$sub_plot <- renderPlot(subplot1)
   })
+  
   
   #If using Manual
   observeEvent(input$selectText,{
@@ -313,15 +337,10 @@ server <- function(input, output, session) {
   
   
   
-  # Render report for downloading
-  render_report <- function(file, data){
-    
-    
-    # Copy the report file to a temporary directory before processing it, in
-    # case we don't have write permissions to the current working dir (which
-    # can happen when deployed).
-    tempReport <- file.path(tempdir(), "report.Rmd")
-    file.copy("report.Rmd", tempReport, overwrite = TRUE)
+  
+  
+  # Get list of parameters for report
+  get_report_params <- function(data){
     
     # Run the analysis
     # --
@@ -343,9 +362,7 @@ server <- function(input, output, session) {
         goal_proportion = goal,
         input_proportion = input
       )
-    
     cals_prop <- data.frame(nutrient = c('Cals'), goal_proportion = c(1), input_proportion=c(1))
-    
     proportions_df <- rbind(cals_prop, proportions_df)
     
     sub_plot <- sub_plot(data)
@@ -360,15 +377,7 @@ server <- function(input, output, session) {
       sub_plot = sub_plot
     )
     
-    # Knit the document, passing in the `params` list, and eval it in a
-    # child of the global environment (this isolates the code in the document
-    # from the code in this app).
-    rmarkdown::render(
-      tempReport, 
-      output_file = file,
-      params = params,
-      envir = new.env(parent = globalenv())
-    )
+    params
   }
   
   
@@ -379,7 +388,8 @@ server <- function(input, output, session) {
     },
     content = function(file) {
       data <- get_data_sliders()
-      render_report(file, data)
+      params <- get_report_params(data)
+      render_report(file, params)
     }
   )
   
@@ -390,7 +400,29 @@ server <- function(input, output, session) {
     },
     content = function(file) {
       data <- get_data_manual()
-      render_report(file, data)
+      params <- get_report_params(data)
+      render_report(file, params)
+    }
+  )
+  
+  
+  # Download dataset
+  output$download_dataset <- downloadHandler(
+    filename = function() {
+      "food_data.csv"
+    },
+    content = function(file) {
+      data <- read.csv('https://raw.githubusercontent.com/UBC-MDS/MacroView/main/data/cleaned_dataset.csv') |>
+        select(c('Food.name', 'Weight', 'Energy', 'Protein', 'Carbohydrate', 'Total.Fat')) |> 
+        rename(
+          food_name = Food.name,
+          weight_grams = Weight,
+          energy_kcal = Energy,
+          protein_grams = Protein,
+          carbohydrate_grams = Carbohydrate,
+          total_fat_grams = Total.Fat
+        )
+      write.csv(data, file)
     }
   )
   
@@ -414,6 +446,7 @@ server <- function(input, output, session) {
     
   })
 }
+
 
 
 
@@ -619,25 +652,25 @@ ui <- navbarPage(
                       ),
                       
                       fluidRow(
-                        h4(""),
+                        h2(""),
                         column(
                           width = 7,
                         )
                       ),
                       fluidRow(
-                        h4(""),
+                        h2(""),
                         column(
                           width = 7,
                         )
                       ),
                       fluidRow(
-                        h4(""),
+                        h2(""),
                         column(
                           width = 7,
                         )
                       ),
                       fluidRow(
-                        h4(""),
+                        h2(""),
                         column(
                           width = 7,
                         )
@@ -779,7 +812,30 @@ ui <- navbarPage(
            readable format in the following booklet: 
            https://open.canada.ca/data/en/dataset/a289fd54-060c-4a96-9fcf-b1c6e706426f/resource/a30e489c-f191-42b5-8f22-1e366e99e7a1'
            ),
-  tabPanel('Download', 'A Page to display some other static information'),
+  tabPanel(
+    'Download',
+    # first navbar page
+    h2("Download the Food Dataset"),
+      mainPanel(
+                       column(
+                         h4("Download Dataset"),
+                         width = 12,
+                         offset = 6,
+                       ),
+                        # Download button
+                       column(
+                         downloadButton("download_dataset"),
+                         width = 5,
+                         offset = 6,
+                       ),
+                       column(
+                         'Note that this data was provided by Health Canada.',
+                         
+                         width = 5,
+                         offset = 6,
+                       )
+                 )
+      ),
   
   tabPanel(
     'Statistics',
