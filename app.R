@@ -7,6 +7,7 @@ library(scales)
 library(RColorBrewer)
 library(plotly)
 library(shinythemes)
+library(rmarkdown)
 
 
 
