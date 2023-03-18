@@ -12,19 +12,21 @@ params:
 
 ## Foods Input:
 ```{r echo=FALSE}
-params$input_foods |> knitr::kable(digits=2)
+# params$input_foods |> knitr::kable(digits=2)
+x <- 1
+x
 ```
 
 
 ## Macronutrient Totals:
 ```{r fig.height=4, fig.width=12, echo=FALSE}
-params$totals |> knitr::kable(digits=2)
-params$main_plot
+# params$totals |> knitr::kable(digits=2)
+# params$main_plot
 ```
 
 
 ## Macronutrient Proportions:
 ```{r fig.height=3, fig.width=12, echo=FALSE}
-params$proportions |> knitr::kable(digits=3)
-params$sub_plot
+# params$proportions |> knitr::kable(digits=3)
+# params$sub_plot
 ```
