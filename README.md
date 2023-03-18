@@ -41,6 +41,8 @@ Once targets and food items are populated, two graphics will be displayed to vis
 The bottom figure will plot the specific caloric intake and targets as a stacked bar plot showing the proportional breakdown of user inputs.
 ![](img/proportions.png)
 
+If users wish to save a specific layout of the app (such as saving a meal plan for printing), they can click the Download Report button corresponding to their desired targets (sliders or manual input). PLEASE NOTE: The Download Report button is currently not working on the current version of the remote deployment of the app. It can be used by cloning the app to a local device and rendering the app locally via R. 
+
 ### Statistics
 
 The `Statistics` layout will feature a user input panel for the user to select nutrition components for ranking, and a plot showing the top food items in the selected category.
